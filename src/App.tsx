@@ -1,10 +1,11 @@
 import React from 'react';
 
+import Dashboard from './pages/Dashboard';
 import GlobalStyle from './styles/global';
 
 const App: React.FC = () => (
   <>
-    <h1>Pokedex</h1>
+    <Dashboard />
     <GlobalStyle />
   </>
 );
