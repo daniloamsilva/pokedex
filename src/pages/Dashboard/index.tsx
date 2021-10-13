@@ -1,10 +1,18 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import { Header, Title, PokemonList } from './styles';
 
 import PokemonItem from '../../components/PokemonItem';
 
+import { usePokemon } from '../../hooks/usePokemon';
+
 const Dashboard: React.FC = () => {
+  const { getPokemonList } = usePokemon();
+
+  useEffect(() => {
+    getPokemonList();
+  }, [getPokemonList]);
+
   return (
     <>
       <Header>
@@ -12,8 +20,6 @@ const Dashboard: React.FC = () => {
       </Header>
       <section>
         <PokemonList>
-          <PokemonItem />
-          <PokemonItem />
           <PokemonItem />
           <PokemonItem />
           <PokemonItem />
