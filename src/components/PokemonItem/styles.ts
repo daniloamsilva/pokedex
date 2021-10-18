@@ -1,4 +1,8 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
+
+interface SectionProps {
+  sprite: string;
+}
 
 export const Container = styled.li`
   width: 100%;
@@ -6,8 +10,47 @@ export const Container = styled.li`
   border-radius: 30px;
   padding: 25px 10px 30px 20px;
   list-style-type: none;
-  background: #48d0b0;
   box-shadow: 0px 0px 15px -5px #595959;
+
+  &.bug-type {
+    background-color: #66bb6a;
+
+    li {
+      background-color: #81c784;
+    }
+  }
+
+  &.fire-type {
+    background-color: #fc6c6d;
+
+    li {
+      background-color: #fc7e7e;
+    }
+  }
+
+  &.grass-type {
+    background-color: #48d0b0;
+
+    li {
+      background-color: #61e0c9;
+    }
+  }
+
+  &.normal-type {
+    background-color: #90a4ae;
+
+    li {
+      background-color: #b0bec5;
+    }
+  }
+
+  &.water-type {
+    background-color: #76befe;
+
+    li {
+      background-color: #8fd1fd;
+    }
+  }
 `;
 
 export const Index = styled.span`
@@ -30,7 +73,7 @@ export const Header = styled.header`
   }
 `;
 
-export const Section = styled.section`
+export const Section = styled.section<SectionProps>`
   display: flex;
   padding-bottom: 20px;
   height: 100%;
@@ -38,7 +81,6 @@ export const Section = styled.section`
   li {
     border-radius: 20px;
     list-style-type: none;
-    background-color: #61e0c9;
     color: #fff;
     font-size: 15px;
     font-weight: bolder;
@@ -49,8 +91,13 @@ export const Section = styled.section`
   }
 
   div {
+    ${props =>
+      props.sprite &&
+      css`
+        background-image: url(${props.sprite});
+      `}
+
     width: 100%;
-    background-image: url('https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1.png');
     background-size: contain;
     background-position: center center;
     background-repeat: no-repeat;

@@ -1,16 +1,60 @@
-import React, { useEffect } from 'react';
+/* eslint-disable no-plusplus */
+/* eslint-disable camelcase */
+/* eslint-disable no-await-in-loop */
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
+import React, { useCallback, useEffect, useState } from 'react';
 
 import { Header, Title, PokemonList } from './styles';
 
-import PokemonItem from '../../components/PokemonItem';
+import { PokemonItem } from '../../components/PokemonItem';
+import { api } from '../../services/api';
 
-import { usePokemon } from '../../hooks/usePokemon';
+interface Pokemon {
+  order: number;
+  name: string;
+  sprites: {
+    other: {
+      'official-artwork': {
+        front_default: string;
+      };
+    };
+  };
+  types: PokemonType[];
+}
 
-const Dashboard: React.FC = () => {
-  const { getPokemonList } = usePokemon();
+interface PokemonType {
+  slot: number;
+  type: {
+    name: string;
+  };
+}
+
+export function Dashboard() {
+  const [pokedex, setPokedex] = useState<Pokemon[]>([] as Pokemon[]);
+
+  const getPokemonList = useCallback(async (startId: number, endId: number) => {
+    for (let index = startId; index <= endId; index++) {
+      const pokemonSearch = localStorage.getItem(
+        `@daniloamsilva:pokemon:${index}`,
+      );
+
+      if (pokemonSearch)
+        setPokedex(oldPokedex => [...oldPokedex, JSON.parse(pokemonSearch)]);
+      else {
+        const { data } = await Promise.resolve(api.get(`pokemon/${index}`));
+
+        localStorage.setItem(
+          `@daniloamsilva:pokemon:${index}`,
+          JSON.stringify(data),
+        );
+
+        setPokedex(oldPokedex => [...oldPokedex, data]);
+      }
+    }
+  }, []);
 
   useEffect(() => {
-    getPokemonList();
+    getPokemonList(1, 20);
   }, [getPokemonList]);
 
   return (
@@ -20,14 +64,15 @@ const Dashboard: React.FC = () => {
       </Header>
       <section>
         <PokemonList>
-          <PokemonItem />
-          <PokemonItem />
-          <PokemonItem />
-          <PokemonItem />
+          {pokedex.map(pokemon => (
+            <PokemonItem
+              key={pokemon.order}
+              pokemon={pokemon}
+              sprite={pokemon.sprites.other['official-artwork'].front_default}
+            />
+          ))}
         </PokemonList>
       </section>
     </>
   );
-};
-
-export default Dashboard;
+}
