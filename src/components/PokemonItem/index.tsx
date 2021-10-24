@@ -1,5 +1,3 @@
-/* eslint-disable camelcase */
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import React, { useCallback } from 'react';
 
 import { Container, Index, Header, Section } from './styles';

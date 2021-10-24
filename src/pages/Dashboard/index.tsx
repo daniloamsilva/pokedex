@@ -1,7 +1,3 @@
-/* eslint-disable no-plusplus */
-/* eslint-disable camelcase */
-/* eslint-disable no-await-in-loop */
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import React, { useCallback, useEffect, useState } from 'react';
 
 import { Header, Title, PokemonList } from './styles';
