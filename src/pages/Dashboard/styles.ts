@@ -14,3 +14,10 @@ export const PokemonList = styled.ul`
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   grid-gap: 20px;
 `;
+
+export const MorePokemonArea = styled.section`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 30px 0;
+`;

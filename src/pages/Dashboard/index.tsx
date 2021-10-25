@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 
-import { Header, Title, PokemonList } from './styles';
+import { Header, Title, PokemonList, MorePokemonArea } from './styles';
 
 import { PokemonItem } from '../../components/PokemonItem';
 import { api } from '../../services/api';
@@ -26,32 +26,29 @@ interface PokemonType {
 }
 
 export function Dashboard() {
-  const [pokedex, setPokedex] = useState<Pokemon[]>([] as Pokemon[]);
+  const [pokemonList, setPokemonList] = useState<Pokemon[]>([] as Pokemon[]);
 
-  const getPokemonList = useCallback(async (startId: number, endId: number) => {
-    for (let index = startId; index <= endId; index++) {
-      const pokemonSearch = localStorage.getItem(
-        `@daniloamsilva:pokemon:${index}`,
-      );
+  const getPokemonInterval = useCallback(
+    async (startId: number, endId: number) => {
+      const newPokemons: Pokemon[] = [];
 
-      if (pokemonSearch)
-        setPokedex(oldPokedex => [...oldPokedex, JSON.parse(pokemonSearch)]);
-      else {
+      for (let index = startId; index <= endId; index++) {
         const { data } = await Promise.resolve(api.get(`pokemon/${index}`));
-
-        localStorage.setItem(
-          `@daniloamsilva:pokemon:${index}`,
-          JSON.stringify(data),
-        );
-
-        setPokedex(oldPokedex => [...oldPokedex, data]);
+        newPokemons.push(data);
       }
-    }
-  }, []);
+
+      setPokemonList(oldPokemonList => [...oldPokemonList, ...newPokemons]);
+    },
+    [],
+  );
+
+  const handleGetMorePokemon = useCallback(() => {
+    getPokemonInterval(pokemonList.length + 1, pokemonList.length + 20);
+  }, [getPokemonInterval, pokemonList]);
 
   useEffect(() => {
-    getPokemonList(1, 20);
-  }, [getPokemonList]);
+    getPokemonInterval(1, 52);
+  }, [getPokemonInterval]);
 
   return (
     <>
@@ -60,7 +57,7 @@ export function Dashboard() {
       </Header>
       <section>
         <PokemonList>
-          {pokedex.map(pokemon => (
+          {pokemonList.map(pokemon => (
             <PokemonItem
               key={pokemon.order}
               pokemon={pokemon}
@@ -69,6 +66,11 @@ export function Dashboard() {
           ))}
         </PokemonList>
       </section>
+      <MorePokemonArea>
+        <button type="button" onClick={handleGetMorePokemon}>
+          Carregar mais Pokémon
+        </button>
+      </MorePokemonArea>
     </>
   );
 }
