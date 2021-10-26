@@ -8,7 +8,7 @@ interface PokemonItemProps {
 }
 
 interface Pokemon {
-  order: number;
+  id: number;
   name: string;
   sprites: {
     other: {
@@ -36,7 +36,7 @@ export function PokemonItem({ pokemon, sprite }: PokemonItemProps) {
     <Container className={`${pokemon.types[0].type.name}-type`}>
       <Header>
         <h3>{capitalize(pokemon.name)}</h3>
-        <Index>#{`000${pokemon.order}`.slice(-3)}</Index>
+        <Index>#{`000${pokemon.id}`.slice(-3)}</Index>
       </Header>
       <Section sprite={sprite}>
         <ul>

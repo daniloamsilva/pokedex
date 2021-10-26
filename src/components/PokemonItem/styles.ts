@@ -161,6 +161,7 @@ export const Index = styled.span`
   font-weight: 900;
   font-size: 25px;
   opacity: 0.5;
+  margin-right: 10px;
 `;
 
 export const Header = styled.header`
@@ -173,7 +174,7 @@ export const Header = styled.header`
   margin-bottom: 15px;
 
   h3 {
-    transform: translateY(10px);
+    transform: translateY(5px);
   }
 `;
 

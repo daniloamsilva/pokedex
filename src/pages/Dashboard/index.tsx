@@ -6,7 +6,7 @@ import { PokemonItem } from '../../components/PokemonItem';
 import { api } from '../../services/api';
 
 interface Pokemon {
-  order: number;
+  id: number;
   name: string;
   sprites: {
     other: {
@@ -59,7 +59,7 @@ export function Dashboard() {
         <PokemonList>
           {pokemonList.map(pokemon => (
             <PokemonItem
-              key={pokemon.order}
+              key={pokemon.id}
               pokemon={pokemon}
               sprite={pokemon.sprites.other['official-artwork'].front_default}
             />
