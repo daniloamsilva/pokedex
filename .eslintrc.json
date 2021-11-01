@@ -24,7 +24,12 @@
     "prettier"
   ],
   "rules": {
+    "no-plusplus": [2, { "allowForLoopAfterthoughts": true }],
+    "camelcase": "off",
+    "no-await-in-loop": "off",
+    "@typescript-eslint/explicit-module-boundary-types": "off",
     "import/prefer-default-export": "off",
+    "react/prop-types": "off",
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "warn",
     "react/jsx-filename-extension": [

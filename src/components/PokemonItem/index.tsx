@@ -1,23 +1,51 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 
 import { Container, Index, Header, Section } from './styles';
 
-const PokemonItem: React.FC = () => {
+interface PokemonItemProps {
+  pokemon: Pokemon;
+  sprite: string;
+}
+
+interface Pokemon {
+  id: number;
+  name: string;
+  sprites: {
+    other: {
+      'official-artwork': {
+        front_default: string;
+      };
+    };
+  };
+  types: PokemonType[];
+}
+
+interface PokemonType {
+  slot: number;
+  type: {
+    name: string;
+  };
+}
+
+export function PokemonItem({ pokemon, sprite }: PokemonItemProps) {
+  const capitalize = useCallback((name: string) => {
+    return name.charAt(0).toUpperCase() + name.slice(1);
+  }, []);
+
   return (
-    <Container>
+    <Container className={`${pokemon.types[0].type.name}-type`}>
       <Header>
-        <h3>Bulbasaur</h3>
-        <Index>#001</Index>
+        <h3>{capitalize(pokemon.name)}</h3>
+        <Index>#{`000${pokemon.id}`.slice(-3)}</Index>
       </Header>
-      <Section>
+      <Section sprite={sprite}>
         <ul>
-          <li>Grass</li>
-          <li>Poison</li>
+          {pokemon.types.map(type => (
+            <li key={type.slot}>{capitalize(type.type.name)}</li>
+          ))}
         </ul>
         <div />
       </Section>
     </Container>
   );
-};
-
-export default PokemonItem;
+}
