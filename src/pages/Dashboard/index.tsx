@@ -3,6 +3,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { Header, Title, PokemonList, MorePokemonArea, Loader } from './styles';
 
 import { PokemonItem } from '../../components/PokemonItem';
+import { SearchBar } from '../../components/SearchBar';
 import { api } from '../../services/api';
 
 interface Pokemon {
@@ -57,6 +58,7 @@ export function Dashboard() {
     <>
       <Header>
         <Title>Pokédex</Title>
+        <SearchBar />
       </Header>
       <main>
         {!pokemonList.length && <Loader />}

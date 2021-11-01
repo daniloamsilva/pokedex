@@ -4,12 +4,26 @@ import { shade } from 'polished';
 import pokeball from '../../assets/pokeball.png';
 
 export const Header = styled.header`
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
   margin-bottom: 30px;
+
+  @media (max-width: 700px) {
+    display: block;
+    margin: 0 15px 30px 15px;
+  }
 `;
 
 export const Title = styled.h1`
   font-size: 48px;
   color: #000000;
+
+  @media (max-width: 700px) {
+    font-size: 40px;
+    text-align: center;
+    margin-bottom: 10px;
+  }
 `;
 
 export const PokemonList = styled.ul`
