@@ -4,55 +4,36 @@ import { Header, Title, PokemonList, MorePokemonArea, Loader } from './styles';
 
 import { PokemonItem } from '../../components/PokemonItem';
 import { SearchBar } from '../../components/SearchBar';
-import { api } from '../../services/api';
 
-interface Pokemon {
-  id: number;
-  name: string;
-  sprites: {
-    other: {
-      'official-artwork': {
-        front_default: string;
-      };
-    };
-  };
-  types: PokemonType[];
-}
-
-interface PokemonType {
-  slot: number;
-  type: {
-    name: string;
-  };
-}
+import { usePokemon } from '../../hooks/usePokemon';
 
 export function Dashboard() {
-  const [pokemonList, setPokemonList] = useState<Pokemon[]>([] as Pokemon[]);
+  const { getPokemonList, getPokemonInterval } = usePokemon();
+
+  const [pokemonList, setPokemonList] = useState(getPokemonList());
   const [loading, setLoading] = useState(false);
 
-  const getPokemonInterval = useCallback(
-    async (startId: number, endId: number) => {
-      const newPokemons: Pokemon[] = [];
+  const getInitialPokemonList = useCallback(async () => {
+    const newPokemonList = await getPokemonInterval(1, 52);
+    setPokemonList(oldPokemonList => [...oldPokemonList, ...newPokemonList]);
+  }, [getPokemonInterval, setPokemonList]);
 
-      for (let index = startId; index <= endId; index++) {
-        const { data } = await Promise.resolve(api.get(`pokemon/${index}`));
-        newPokemons.push(data);
-      }
-
-      setPokemonList(oldPokemonList => [...oldPokemonList, ...newPokemons]);
-      setLoading(false);
-    },
-    [],
-  );
-
-  const handleGetMorePokemon = useCallback(() => {
+  const handleGetMorePokemon = useCallback(async () => {
     setLoading(true);
-    getPokemonInterval(pokemonList.length + 1, pokemonList.length + 20);
-  }, [getPokemonInterval, pokemonList]);
+
+    const newPokemonList = await getPokemonInterval(
+      pokemonList.length + 1,
+      pokemonList.length + 20,
+    );
+
+    setPokemonList(oldPokemonList => [...oldPokemonList, ...newPokemonList]);
+
+    setLoading(false);
+  }, [getPokemonInterval, pokemonList, setPokemonList]);
 
   useEffect(() => {
-    getPokemonInterval(1, 52);
-  }, [getPokemonInterval]);
+    getInitialPokemonList();
+  }, [getInitialPokemonList]);
 
   return (
     <>
