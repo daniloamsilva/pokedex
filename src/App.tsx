@@ -3,9 +3,13 @@ import React from 'react';
 import { Dashboard } from './pages/Dashboard';
 import GlobalStyle from './styles/global';
 
+import { PokemonProvider } from './hooks/usePokemon';
+
 const App: React.FC = () => (
   <>
-    <Dashboard />
+    <PokemonProvider>
+      <Dashboard />
+    </PokemonProvider>
 
     <GlobalStyle />
   </>
