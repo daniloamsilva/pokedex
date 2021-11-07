@@ -1,9 +1,18 @@
-import React, { createContext, useCallback, useContext, useState } from 'react';
+import React, {
+  createContext,
+  Dispatch,
+  SetStateAction,
+  useCallback,
+  useContext,
+  useState,
+} from 'react';
 import { api } from '../services/api';
 
 interface PokemonContextData {
-  getPokemonList(): Pokemon[];
-  getPokemonInterval(startId: number, endId: number): Promise<Pokemon[]>;
+  pokemonList: Pokemon[];
+  setPokemonList: Dispatch<SetStateAction<Pokemon[]>>;
+  getPokemonInterval(startId: number, endId: number): Promise<void>;
+  getPokemonSearch(matchSearchPokemon: PokemonName[]): void;
 }
 
 interface Pokemon {
@@ -26,16 +35,16 @@ interface PokemonType {
   };
 }
 
+interface PokemonName {
+  name: string;
+}
+
 const PokemonContext = createContext<PokemonContextData>(
   {} as PokemonContextData,
 );
 
 const PokemonProvider: React.FC = ({ children }) => {
   const [pokemonList, setPokemonList] = useState<Pokemon[]>([] as Pokemon[]);
-
-  const getPokemonList = useCallback(() => {
-    return pokemonList;
-  }, [pokemonList]);
 
   const getPokemonInterval = useCallback(
     async (startId: number, endId: number) => {
@@ -47,14 +56,39 @@ const PokemonProvider: React.FC = ({ children }) => {
       }
 
       setPokemonList(oldPokemonList => [...oldPokemonList, ...newPokemons]);
+    },
+    [],
+  );
 
-      return newPokemons;
+  const getPokemonSearch = useCallback(
+    async (matchSearchPokemon: PokemonName[]) => {
+      const matchPokemonInfos: Pokemon[] = [];
+
+      for (
+        let index = 0;
+        index < matchSearchPokemon.length && index <= 51;
+        index++
+      ) {
+        const { data } = await Promise.resolve(
+          api.get(`pokemon/${matchSearchPokemon[index].name}`),
+        );
+        matchPokemonInfos.push(data);
+      }
+
+      setPokemonList(matchPokemonInfos);
     },
     [],
   );
 
   return (
-    <PokemonContext.Provider value={{ getPokemonList, getPokemonInterval }}>
+    <PokemonContext.Provider
+      value={{
+        pokemonList,
+        setPokemonList,
+        getPokemonInterval,
+        getPokemonSearch,
+      }}
+    >
       {children}
     </PokemonContext.Provider>
   );

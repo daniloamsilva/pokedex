@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import { Header, Title, PokemonList, MorePokemonArea, Loader } from './styles';
 
@@ -8,32 +8,19 @@ import { SearchBar } from '../../components/SearchBar';
 import { usePokemon } from '../../hooks/usePokemon';
 
 export function Dashboard() {
-  const { getPokemonList, getPokemonInterval } = usePokemon();
+  const { pokemonList, getPokemonInterval } = usePokemon();
 
-  const [pokemonList, setPokemonList] = useState(getPokemonList());
   const [loading, setLoading] = useState(false);
-
-  const getInitialPokemonList = useCallback(async () => {
-    const newPokemonList = await getPokemonInterval(1, 52);
-    setPokemonList(oldPokemonList => [...oldPokemonList, ...newPokemonList]);
-  }, [getPokemonInterval, setPokemonList]);
 
   const handleGetMorePokemon = useCallback(async () => {
     setLoading(true);
-
-    const newPokemonList = await getPokemonInterval(
-      pokemonList.length + 1,
-      pokemonList.length + 20,
-    );
-
-    setPokemonList(oldPokemonList => [...oldPokemonList, ...newPokemonList]);
-
+    await getPokemonInterval(pokemonList.length + 1, pokemonList.length + 20);
     setLoading(false);
-  }, [getPokemonInterval, pokemonList, setPokemonList]);
+  }, [getPokemonInterval, pokemonList]);
 
   useEffect(() => {
-    getInitialPokemonList();
-  }, [getInitialPokemonList]);
+    getPokemonInterval(1, 52);
+  }, [getPokemonInterval]);
 
   return (
     <>
@@ -61,11 +48,13 @@ export function Dashboard() {
             {loading ? (
               <Loader />
             ) : (
-              <MorePokemonArea>
-                <button type="button" onClick={handleGetMorePokemon}>
-                  Carregar mais Pokémon
-                </button>
-              </MorePokemonArea>
+              pokemonList.length >= 52 && (
+                <MorePokemonArea>
+                  <button type="button" onClick={handleGetMorePokemon}>
+                    Carregar mais Pokémon
+                  </button>
+                </MorePokemonArea>
+              )
             )}
           </section>
         )}
