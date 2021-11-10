@@ -1,10 +1,11 @@
-import { useCallback, FormEvent, useState } from 'react';
+import { useCallback, FormEvent } from 'react';
 import { FaSearch } from 'react-icons/fa';
 
 import { Form } from './styles';
 
 import { api } from '../../services/api';
 import { usePokemon } from '../../hooks/usePokemon';
+import { useSearch } from '../../hooks/useSearch';
 
 interface PokemonName {
   name: string;
@@ -27,9 +28,8 @@ interface PokemonName {
  */
 
 export function SearchBar() {
-  const [search, setSearch] = useState('');
-
   const { setPokemonList, getPokemonSearch } = usePokemon();
+  const { search, setSearch } = useSearch();
 
   const handleSubmitSearch = useCallback(
     async (event: FormEvent<HTMLFormElement>) => {

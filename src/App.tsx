@@ -4,12 +4,15 @@ import { Dashboard } from './pages/Dashboard';
 import GlobalStyle from './styles/global';
 
 import { PokemonProvider } from './hooks/usePokemon';
+import { SearchProvider } from './hooks/useSearch';
 
 const App: React.FC = () => (
   <>
-    <PokemonProvider>
-      <Dashboard />
-    </PokemonProvider>
+    <SearchProvider>
+      <PokemonProvider>
+        <Dashboard />
+      </PokemonProvider>
+    </SearchProvider>
 
     <GlobalStyle />
   </>
