@@ -21,8 +21,13 @@ interface PokemonName {
 }
 
 export function Dashboard() {
-  const { pokemonList, setPokemonList, getPokemonInterval, getPokemonSearch } =
-    usePokemon();
+  const {
+    pokemonList,
+    setPokemonList,
+    getPokemonInterval,
+    getPokemonSearch,
+    getContinueSearchList,
+  } = usePokemon();
   const { search, setSearch } = useSearch();
 
   const [loading, setLoading] = useState(true);
@@ -34,9 +39,13 @@ export function Dashboard() {
 
   const handleGetMorePokemon = useCallback(async () => {
     setLoading(true);
-    await getPokemonInterval(pokemonList.length + 1, pokemonList.length + 20);
+
+    if (search === '')
+      await getPokemonInterval(pokemonList.length + 1, pokemonList.length + 52);
+    else await getContinueSearchList();
+
     setLoading(false);
-  }, [getPokemonInterval, pokemonList]);
+  }, [getPokemonInterval, getContinueSearchList, pokemonList, search]);
 
   const handleSubmitSearch = useCallback(
     async (event: FormEvent<HTMLFormElement>) => {
@@ -96,7 +105,7 @@ export function Dashboard() {
         {loading && <Loader />}
 
         <section>
-          {!loading && pokemonList.length >= 52 && (
+          {!loading && !(pokemonList.length % 52) && (
             <MorePokemonArea>
               <button type="button" onClick={handleGetMorePokemon}>
                 Carregar mais Pokémon

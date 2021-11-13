@@ -6,13 +6,16 @@ import React, {
   useContext,
   useState,
 } from 'react';
+
 import { api } from '../services/api';
+import { useSearch } from './useSearch';
 
 interface PokemonContextData {
   pokemonList: Pokemon[];
   setPokemonList: Dispatch<SetStateAction<Pokemon[]>>;
   getPokemonInterval(startId: number, endId: number): Promise<void>;
-  getPokemonSearch(matchSearchPokemon: PokemonName[]): void;
+  getPokemonSearch(matchSearchPokemon: PokemonName[]): Promise<void>;
+  getContinueSearchList(): Promise<void>;
 }
 
 interface Pokemon {
@@ -45,6 +48,7 @@ const PokemonContext = createContext<PokemonContextData>(
 
 const PokemonProvider: React.FC = ({ children }) => {
   const [pokemonList, setPokemonList] = useState<Pokemon[]>([] as Pokemon[]);
+  const { search } = useSearch();
 
   const getPokemonInterval = useCallback(
     async (startId: number, endId: number) => {
@@ -80,6 +84,30 @@ const PokemonProvider: React.FC = ({ children }) => {
     [],
   );
 
+  const getContinueSearchList = useCallback(async (): Promise<void> => {
+    const matchPokemonInfos: Pokemon[] = [];
+
+    const { data } = await Promise.resolve(api.get('pokemon?limit=898'));
+    const listPokemonNames: PokemonName[] = data.results;
+
+    const matchSearchList = listPokemonNames.filter(pokemon => {
+      return pokemon.name.includes(search.toLowerCase());
+    });
+
+    for (
+      let index = pokemonList.length;
+      index < matchSearchList.length && matchPokemonInfos.length <= 51;
+      index++
+    ) {
+      const result = await Promise.resolve(
+        api.get(`pokemon/${matchSearchList[index].name}`),
+      );
+      matchPokemonInfos.push(result.data);
+    }
+
+    setPokemonList(oldPokemonList => [...oldPokemonList, ...matchPokemonInfos]);
+  }, [search, pokemonList]);
+
   return (
     <PokemonContext.Provider
       value={{
@@ -87,6 +115,7 @@ const PokemonProvider: React.FC = ({ children }) => {
         setPokemonList,
         getPokemonInterval,
         getPokemonSearch,
+        getContinueSearchList,
       }}
     >
       {children}
