@@ -71,8 +71,9 @@ export function Dashboard() {
             placeholder="Pesquisar..."
             value={search}
             onChange={e => setSearch(e.target.value)}
+            disabled={loading}
           />
-          <button type="submit">
+          <button type="submit" disabled={loading}>
             <FaSearch
               style={{ marginRight: '5px', transform: 'translateY(2px)' }}
             />
