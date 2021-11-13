@@ -8,6 +8,7 @@ import {
   MorePokemonArea,
   Loader,
   Form,
+  NoMatchingAlert,
 } from './styles';
 
 import { PokemonItem } from '../../components/PokemonItem';
@@ -118,7 +119,11 @@ export function Dashboard() {
             </MorePokemonArea>
           )}
 
-          {!loading && !pokemonList.length && <h1>Sem resultados!</h1>}
+          {!loading && !pokemonList.length && (
+            <NoMatchingAlert>
+              <h3>Nenhum Pokémon corresponde à sua pesquisa!</h3>
+            </NoMatchingAlert>
+          )}
         </section>
       </main>
     </>

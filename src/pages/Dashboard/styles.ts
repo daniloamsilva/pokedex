@@ -109,3 +109,16 @@ export const Form = styled.form`
     display: table;
   }
 `;
+
+export const NoMatchingAlert = styled.form`
+  width: 100%;
+  border: 2px solid red;
+  border-radius: 20px;
+  padding: 10px;
+
+  h3 {
+    color: red;
+    font-weight: normal;
+    text-align: center;
+  }
+`;
