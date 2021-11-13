@@ -31,6 +31,7 @@ export function Dashboard() {
   const { search, setSearch } = useSearch();
 
   const [loading, setLoading] = useState(true);
+  const [hasMorePokemon, setHasMorePokemon] = useState(true);
 
   const getInitialPokemonList = useCallback(async () => {
     await getPokemonInterval(1, 52);
@@ -70,6 +71,10 @@ export function Dashboard() {
     getInitialPokemonList();
   }, [getInitialPokemonList]);
 
+  useEffect(() => {
+    setHasMorePokemon(!!pokemonList.length && !(pokemonList.length % 52));
+  }, [pokemonList]);
+
   return (
     <>
       <Header>
@@ -105,7 +110,7 @@ export function Dashboard() {
         {loading && <Loader />}
 
         <section>
-          {!loading && !(pokemonList.length % 52) && (
+          {!loading && hasMorePokemon && (
             <MorePokemonArea>
               <button type="button" onClick={handleGetMorePokemon}>
                 Carregar mais Pokémon
