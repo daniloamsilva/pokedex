@@ -1,5 +1,7 @@
 import { createGlobalStyle } from 'styled-components';
 
+import imgPokeball from '../assets/pokeball.svg';
+
 export default createGlobalStyle`
   * {
     margin: 0;
@@ -9,7 +11,13 @@ export default createGlobalStyle`
   }
 
   body {
-    background: #FFFFFF;
+    background-color: #FFFFFF;
+    background-image: url(${imgPokeball});
+    background-repeat: no-repeat;
+    background-size: 70vw;
+    background-position-x: 60vw;
+    background-position-y: -30vw;
+    background-attachment: fixed;
     -webkit-font-smoothing: antialiased;
   }
 
