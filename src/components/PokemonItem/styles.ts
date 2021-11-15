@@ -21,6 +21,12 @@ export const Container = styled.li`
   background-repeat: no-repeat;
   background-size: 45%;
   background-position: bottom right;
+  transition: 0.5s;
+
+  &:hover {
+    transform: translate(0, -10px);
+    cursor: pointer;
+  }
 
   &.bug-type {
     background-color: #66bb6a;

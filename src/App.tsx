@@ -1,7 +1,9 @@
 import React from 'react';
+import { BrowserRouter } from 'react-router-dom';
 
-import { Dashboard } from './pages/Dashboard';
 import GlobalStyle from './styles/global';
+
+import { Routes } from './routes';
 
 import { PokemonProvider } from './hooks/usePokemon';
 import { SearchProvider } from './hooks/useSearch';
@@ -10,7 +12,9 @@ const App: React.FC = () => (
   <>
     <SearchProvider>
       <PokemonProvider>
-        <Dashboard />
+        <BrowserRouter>
+          <Routes />
+        </BrowserRouter>
       </PokemonProvider>
     </SearchProvider>
 

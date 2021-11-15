@@ -1,4 +1,5 @@
-import React, { useCallback } from 'react';
+import { useCallback } from 'react';
+import { Link } from 'react-router-dom';
 
 import { Container, Index, Header, Section } from './styles';
 
@@ -33,19 +34,21 @@ export function PokemonItem({ pokemon, sprite }: PokemonItemProps) {
   }, []);
 
   return (
-    <Container className={`${pokemon.types[0].type.name}-type`}>
-      <Header nameLength={pokemon.name.length}>
-        <h3>{capitalize(pokemon.name)}</h3>
-        <Index>#{`000${pokemon.id}`.slice(-3)}</Index>
-      </Header>
-      <Section sprite={sprite}>
-        <ul>
-          {pokemon.types.map(type => (
-            <li key={type.slot}>{capitalize(type.type.name)}</li>
-          ))}
-        </ul>
-        <div />
-      </Section>
-    </Container>
+    <Link to={`/details/${pokemon.id}`} style={{ textDecoration: 'none' }}>
+      <Container className={`${pokemon.types[0].type.name}-type`}>
+        <Header nameLength={pokemon.name.length}>
+          <h3>{capitalize(pokemon.name)}</h3>
+          <Index>#{`000${pokemon.id}`.slice(-3)}</Index>
+        </Header>
+        <Section sprite={sprite}>
+          <ul>
+            {pokemon.types.map(type => (
+              <li key={type.slot}>{capitalize(type.type.name)}</li>
+            ))}
+          </ul>
+          <div />
+        </Section>
+      </Container>
+    </Link>
   );
 }
