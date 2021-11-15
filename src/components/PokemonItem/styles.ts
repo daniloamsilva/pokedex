@@ -1,5 +1,7 @@
 import styled, { css } from 'styled-components';
 
+import imgPokeball from '../../assets/pokeball_bg_card.svg';
+
 interface HeaderProps {
   nameLength: number;
 }
@@ -15,6 +17,10 @@ export const Container = styled.li`
   padding: 25px 10px 30px 20px;
   list-style-type: none;
   box-shadow: 0px 0px 15px -5px #595959;
+  background-image: url(${imgPokeball});
+  background-repeat: no-repeat;
+  background-size: 45%;
+  background-position: bottom right;
 
   &.bug-type {
     background-color: #66bb6a;
