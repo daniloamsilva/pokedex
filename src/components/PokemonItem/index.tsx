@@ -34,7 +34,7 @@ export function PokemonItem({ pokemon, sprite }: PokemonItemProps) {
 
   return (
     <Container className={`${pokemon.types[0].type.name}-type`}>
-      <Header>
+      <Header nameLength={pokemon.name.length}>
         <h3>{capitalize(pokemon.name)}</h3>
         <Index>#{`000${pokemon.id}`.slice(-3)}</Index>
       </Header>

@@ -1,5 +1,9 @@
 import styled, { css } from 'styled-components';
 
+interface HeaderProps {
+  nameLength: number;
+}
+
 interface SectionProps {
   sprite: string;
 }
@@ -164,7 +168,7 @@ export const Index = styled.span`
   margin-right: 10px;
 `;
 
-export const Header = styled.header`
+export const Header = styled.header<HeaderProps>`
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -175,6 +179,12 @@ export const Header = styled.header`
 
   h3 {
     transform: translateY(5px);
+
+    ${props =>
+      props.nameLength > 12 &&
+      css`
+        font-size: 20px;
+      `}
   }
 `;
 
