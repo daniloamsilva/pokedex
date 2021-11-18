@@ -35,7 +35,7 @@ export function PokemonItem({ pokemon, sprite }: PokemonItemProps) {
 
   return (
     <Link to={`/details/${pokemon.id}`} style={{ textDecoration: 'none' }}>
-      <Container className={`${pokemon.types[0].type.name}-type`}>
+      <Container type={`${pokemon.types[0].type.name}`}>
         <Header nameLength={pokemon.name.length}>
           <h3>{capitalize(pokemon.name)}</h3>
           <Index>#{`000${pokemon.id}`.slice(-3)}</Index>
