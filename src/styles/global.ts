@@ -81,12 +81,6 @@ export default createGlobalStyle`
     font: 16px Roboto, sans-serif;
   }
 
-  #root {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 40px 20px;
-  }
-
   button {
     cursor: pointer;
   }

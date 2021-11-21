@@ -1,6 +1,10 @@
 import { useEffect, useState } from 'react';
-import { useRouteMatch } from 'react-router-dom';
+import { Link, useRouteMatch } from 'react-router-dom';
+import { FaArrowLeft } from 'react-icons/fa';
+
 import { api } from '../../services/api';
+
+import { Container, Header } from './styles';
 
 interface PokemonDetailsParams {
   id: string;
@@ -40,7 +44,17 @@ export function PokemonDetails() {
     <>
       {!pokemon && <h1>Carregando...</h1>}
 
-      {pokemon && <h1>Pokemon: {pokemon.name}</h1>}
+      {pokemon && (
+        <Container type={pokemon.types[0].type.name}>
+          <Header>
+            <nav>
+              <Link id="back_button" to="/">
+                <FaArrowLeft id="arrow_left_icon" />
+              </Link>
+            </nav>
+          </Header>
+        </Container>
+      )}
     </>
   );
 }

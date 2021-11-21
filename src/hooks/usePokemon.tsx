@@ -4,6 +4,7 @@ import React, {
   SetStateAction,
   useCallback,
   useContext,
+  useEffect,
   useState,
 } from 'react';
 
@@ -107,6 +108,14 @@ const PokemonProvider: React.FC = ({ children }) => {
 
     setPokemonList(oldPokemonList => [...oldPokemonList, ...matchPokemonInfos]);
   }, [search, pokemonList]);
+
+  const getInitialPokemonList = useCallback(async () => {
+    await getPokemonInterval(1, 52);
+  }, [getPokemonInterval]);
+
+  useEffect(() => {
+    getInitialPokemonList();
+  }, [getInitialPokemonList]);
 
   return (
     <PokemonContext.Provider

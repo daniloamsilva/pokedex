@@ -3,6 +3,12 @@ import { shade } from 'polished';
 
 import pokeball from '../../assets/pokeball.png';
 
+export const Container = styled.div`
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+`;
+
 export const Header = styled.header`
   display: flex;
   justify-content: space-between;
@@ -28,7 +34,6 @@ export const Title = styled.h1`
 
 export const PokemonList = styled.ul`
   display: grid;
-  /* grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); */
   grid-template-columns: repeat(4, 1fr);
   grid-gap: 20px;
   margin-bottom: 10px;

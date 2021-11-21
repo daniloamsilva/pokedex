@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState, FormEvent } from 'react';
 import { FaSearch } from 'react-icons/fa';
 
 import {
+  Container,
   Header,
   Title,
   PokemonList,
@@ -31,13 +32,8 @@ export function Dashboard() {
   } = usePokemon();
   const { search, setSearch } = useSearch();
 
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(!pokemonList.length);
   const [hasMorePokemon, setHasMorePokemon] = useState(true);
-
-  const getInitialPokemonList = useCallback(async () => {
-    await getPokemonInterval(1, 52);
-    setLoading(false);
-  }, [getPokemonInterval]);
 
   const handleGetMorePokemon = useCallback(async () => {
     setLoading(true);
@@ -69,15 +65,12 @@ export function Dashboard() {
   );
 
   useEffect(() => {
-    getInitialPokemonList();
-  }, [getInitialPokemonList]);
-
-  useEffect(() => {
+    if (pokemonList.length) setLoading(false);
     setHasMorePokemon(!!pokemonList.length && !(pokemonList.length % 52));
   }, [pokemonList]);
 
   return (
-    <>
+    <Container>
       <Header>
         <Title>Pokédex</Title>
         <Form onSubmit={handleSubmitSearch}>
@@ -126,6 +119,6 @@ export function Dashboard() {
           )}
         </section>
       </main>
-    </>
+    </Container>
   );
 }
