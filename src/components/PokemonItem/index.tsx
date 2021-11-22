@@ -46,7 +46,7 @@ export function PokemonItem({ pokemon, sprite }: PokemonItemProps) {
               <li key={type.slot}>{capitalize(type.type.name)}</li>
             ))}
           </ul>
-          <div />
+          <div id="pokemon_image" />
         </Section>
       </Container>
     </Link>

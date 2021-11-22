@@ -82,7 +82,7 @@ export const Section = styled.section<SectionProps>`
     transform: translateY(10px);
   }
 
-  div {
+  div#pokemon_image {
     ${props =>
       props.sprite &&
       css`
