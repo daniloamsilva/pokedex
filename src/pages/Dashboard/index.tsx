@@ -76,7 +76,7 @@ export function Dashboard() {
         <Form onSubmit={handleSubmitSearch}>
           <input
             type="text"
-            placeholder="Pesquisar..."
+            placeholder="Search..."
             value={search}
             onChange={e => setSearch(e.target.value)}
             disabled={loading}
@@ -107,14 +107,14 @@ export function Dashboard() {
           {!loading && hasMorePokemon && (
             <MorePokemonArea>
               <button type="button" onClick={handleGetMorePokemon}>
-                Carregar mais Pokémon
+                Load more Pokémon
               </button>
             </MorePokemonArea>
           )}
 
           {!loading && !pokemonList.length && (
             <NoMatchingAlert>
-              <h3>Nenhum Pokémon corresponde à sua pesquisa!</h3>
+              <h3>No Pokémon matches your search!</h3>
             </NoMatchingAlert>
           )}
         </section>

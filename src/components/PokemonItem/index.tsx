@@ -1,6 +1,8 @@
 import { useCallback } from 'react';
 import { Link } from 'react-router-dom';
 
+import { capitalizeHelper } from '../../helpers/capitalize';
+
 import { Container, Index, Header, Section } from './styles';
 
 interface PokemonItemProps {
@@ -29,9 +31,7 @@ interface PokemonType {
 }
 
 export function PokemonItem({ pokemon, sprite }: PokemonItemProps) {
-  const capitalize = useCallback((name: string) => {
-    return name.charAt(0).toUpperCase() + name.slice(1);
-  }, []);
+  const capitalize = useCallback(capitalizeHelper, []);
 
   return (
     <Link to={`/details/${pokemon.id}`} style={{ textDecoration: 'none' }}>
