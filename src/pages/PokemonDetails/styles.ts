@@ -100,6 +100,7 @@ export const Title = styled.div`
 export const PokemonImage = styled.div`
   display: flex;
   justify-content: center;
+  align-items: flex-start;
 
   img {
     width: 55%;
