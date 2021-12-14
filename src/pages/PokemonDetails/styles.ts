@@ -102,7 +102,7 @@ export const PokemonImage = styled.div`
   justify-content: center;
 
   img {
-    width: 200px;
+    width: 55%;
   }
 
   @media (max-width: 500px) {
