@@ -2,6 +2,10 @@ import styled, { css } from 'styled-components';
 
 import imgPokeball from '../../assets/pokeball_bg_card.svg';
 
+interface ContainerProps {
+  type: string;
+}
+
 interface HeaderProps {
   nameLength: number;
 }
@@ -10,7 +14,7 @@ interface SectionProps {
   sprite: string;
 }
 
-export const Container = styled.li`
+export const Container = styled.li<ContainerProps>`
   width: 100%;
   height: 205px;
   border-radius: 30px;
@@ -21,149 +25,16 @@ export const Container = styled.li`
   background-repeat: no-repeat;
   background-size: 45%;
   background-position: bottom right;
+  transition: 0.5s;
+  background-color: ${props => `var(--color-${props.type}-type-dark)`};
 
-  &.bug-type {
-    background-color: #66bb6a;
-
-    li {
-      background-color: #81c784;
-    }
+  li {
+    background-color: ${props => `var(--color-${props.type}-type-light)`};
   }
 
-  &.dark-type {
-    background-color: #757575;
-
-    li {
-      background-color: #9e9e9e;
-    }
-  }
-
-  &.dragon-type {
-    background-color: #ff7043;
-
-    li {
-      background-color: #ff8a65;
-    }
-  }
-
-  &.electric-type {
-    background-color: #ffce4b;
-
-    li {
-      background-color: #fbe068;
-    }
-  }
-
-  &.fairy-type {
-    background-color: #ffab91;
-
-    li {
-      background-color: #ffccbc;
-    }
-  }
-
-  &.fighting-type {
-    background-color: #ff7043;
-
-    li {
-      background-color: #ff8a65;
-    }
-  }
-
-  &.fire-type {
-    background-color: #fc6c6d;
-
-    li {
-      background-color: #fc7e7e;
-    }
-  }
-
-  &.flying-type {
-    background-color: #448aff;
-
-    li {
-      background-color: #82b1ff;
-    }
-  }
-
-  &.ghost-type {
-    background-color: #9575cd;
-
-    li {
-      background-color: #b39ddb;
-    }
-  }
-
-  &.grass-type {
-    background-color: #48d0b0;
-
-    li {
-      background-color: #61e0c9;
-    }
-  }
-
-  &.ground-type {
-    background-color: #ffa726;
-
-    li {
-      background-color: #ffb74d;
-    }
-  }
-
-  &.ice-type {
-    background-color: #64b5f6;
-
-    li {
-      background-color: #90caf9;
-    }
-  }
-
-  &.normal-type {
-    background-color: #90a4ae;
-
-    li {
-      background-color: #b0bec5;
-    }
-  }
-
-  &.poison-type {
-    background-color: #ba68c8;
-
-    li {
-      background-color: #ce93d8;
-    }
-  }
-
-  &.psychic-type {
-    background-color: #f06292;
-
-    li {
-      background-color: #f48fb1;
-    }
-  }
-
-  &.rock-type {
-    background-color: #a1887f;
-
-    li {
-      background-color: #bcaaa4;
-    }
-  }
-
-  &.steel-type {
-    background-color: #9e9e9e;
-
-    li {
-      background-color: #bdbdbd;
-    }
-  }
-
-  &.water-type {
-    background-color: #76befe;
-
-    li {
-      background-color: #8fd1fd;
-    }
+  &:hover {
+    transform: translate(0, -10px);
+    cursor: pointer;
   }
 `;
 
@@ -211,7 +82,7 @@ export const Section = styled.section<SectionProps>`
     transform: translateY(10px);
   }
 
-  div {
+  div#pokemon_image {
     ${props =>
       props.sprite &&
       css`
