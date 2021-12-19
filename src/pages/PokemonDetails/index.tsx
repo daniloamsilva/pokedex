@@ -6,6 +6,8 @@ import { api } from '../../services/api';
 import { capitalizeHelper } from '../../helpers/capitalize';
 
 import { Container, Nav, Header, Title, PokemonImage, Main } from './styles';
+
+import { PokemonAbout } from '../../components/PokemonAbout';
 import { PokemonStats } from '../../components/PokemonStats';
 
 interface PokemonDetailsParams {
@@ -23,7 +25,10 @@ interface Pokemon {
     };
   };
   stats: Stat[];
-  types: PokemonType[];
+  types: Type[];
+  abilities: Ability[];
+  height: number;
+  weight: number;
 }
 
 interface Stat {
@@ -33,11 +38,18 @@ interface Stat {
   };
 }
 
-interface PokemonType {
+interface Type {
   slot: number;
   type: {
     name: string;
   };
+}
+
+interface Ability {
+  ability: {
+    name: string;
+  };
+  is_hidden: boolean;
 }
 
 export function PokemonDetails() {
@@ -85,6 +97,11 @@ export function PokemonDetails() {
             </Header>
           </Container>
           <Main>
+            <PokemonAbout
+              height={pokemon.height}
+              weight={pokemon.weight}
+              abilities={pokemon.abilities}
+            />
             <PokemonStats
               base_stats={pokemon.stats}
               type={pokemon.types[0].type.name}
