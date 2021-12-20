@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { Link, useRouteMatch } from 'react-router-dom';
 import { FaArrowLeft } from 'react-icons/fa';
 
-import { api } from '../../services/api';
+import { usePokemon } from '../../hooks/usePokemon';
 import { capitalizeHelper } from '../../helpers/capitalize';
 
 import { Container, Nav, Header, Title, PokemonImage, Main } from './styles';
@@ -54,15 +54,20 @@ interface Ability {
 
 export function PokemonDetails() {
   const { params } = useRouteMatch<PokemonDetailsParams>();
-  const [pokemon, setPokemon] = useState<null | Pokemon>();
+  const { getPokemon } = usePokemon();
+
+  const [pokemon, setPokemon] = useState<Pokemon | null>();
 
   const capitalize = useCallback(capitalizeHelper, []);
 
+  const handleGetPokemon = useCallback(async () => {
+    const pokemonTarget = await getPokemon(parseInt(params.id));
+    setPokemon(pokemonTarget);
+  }, [params, getPokemon]);
+
   useEffect(() => {
-    api.get(`pokemon/${params.id}`).then(response => {
-      setPokemon(response.data);
-    });
-  }, [params]);
+    handleGetPokemon();
+  }, [handleGetPokemon]);
 
   return (
     <>
