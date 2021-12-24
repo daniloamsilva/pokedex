@@ -15,6 +15,7 @@ interface PokemonContextData {
   pokemonList: Pokemon[];
   setPokemonList: Dispatch<SetStateAction<Pokemon[]>>;
   getPokemon(id: number): Promise<Pokemon>;
+  getPokemonSpecie(id: number): Promise<PokemonDetails>;
   getPokemonInterval(startId: number, endId: number): Promise<void>;
   getPokemonSearch(matchSearchPokemon: PokemonName[]): Promise<void>;
   getContinueSearchList(): Promise<void>;
@@ -62,6 +63,17 @@ interface PokemonName {
   name: string;
 }
 
+interface PokemonDetails {
+  flavor_text_entries: FlavorTextEntrie[];
+}
+
+interface FlavorTextEntrie {
+  flavor_text: string;
+  language: {
+    name: string;
+  };
+}
+
 const PokemonContext = createContext<PokemonContextData>(
   {} as PokemonContextData,
 );
@@ -72,6 +84,11 @@ const PokemonProvider: React.FC = ({ children }) => {
 
   const getPokemon = useCallback(async (id: number) => {
     const { data } = await Promise.resolve(api.get(`pokemon/${id}`));
+    return data;
+  }, []);
+
+  const getPokemonSpecie = useCallback(async (id: number) => {
+    const { data } = await Promise.resolve(api.get(`pokemon-species/${id}`));
     return data;
   }, []);
 
@@ -143,6 +160,7 @@ const PokemonProvider: React.FC = ({ children }) => {
         pokemonList,
         setPokemonList,
         getPokemon,
+        getPokemonSpecie,
         getPokemonInterval,
         getPokemonSearch,
         getContinueSearchList,

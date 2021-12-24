@@ -52,18 +52,33 @@ interface Ability {
   is_hidden: boolean;
 }
 
+interface PokemonSpecie {
+  flavor_text_entries: FlavorTextEntrie[];
+}
+
+interface FlavorTextEntrie {
+  flavor_text: string;
+  language: {
+    name: string;
+  };
+}
+
 export function PokemonDetails() {
   const { params } = useRouteMatch<PokemonDetailsParams>();
-  const { getPokemon } = usePokemon();
+  const { getPokemon, getPokemonSpecie } = usePokemon();
 
   const [pokemon, setPokemon] = useState<Pokemon | null>();
+  const [pokemonSpecie, setPokemonSpecie] = useState<PokemonSpecie | null>();
 
   const capitalize = useCallback(capitalizeHelper, []);
 
   const handleGetPokemon = useCallback(async () => {
     const pokemonTarget = await getPokemon(parseInt(params.id));
     setPokemon(pokemonTarget);
-  }, [params, getPokemon]);
+
+    const targetDetails = await getPokemonSpecie(parseInt(params.id));
+    setPokemonSpecie(targetDetails);
+  }, [params, getPokemon, getPokemonSpecie]);
 
   useEffect(() => {
     handleGetPokemon();
@@ -103,6 +118,11 @@ export function PokemonDetails() {
           </Container>
           <Main>
             <PokemonAbout
+              description={
+                pokemonSpecie?.flavor_text_entries.find(
+                  text => text.language.name === 'en',
+                )?.flavor_text
+              }
               height={pokemon.height}
               weight={pokemon.weight}
               abilities={pokemon.abilities}

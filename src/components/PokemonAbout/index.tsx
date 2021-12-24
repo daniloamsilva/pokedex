@@ -5,6 +5,7 @@ import { Container } from './styles';
 import { capitalizeHelper } from '../../helpers/capitalize';
 
 interface PokemonAboutProps {
+  description: string | undefined;
   height: number;
   weight: number;
   abilities: Ability[];
@@ -17,7 +18,12 @@ interface Ability {
   is_hidden: boolean;
 }
 
-export function PokemonAbout({ height, weight, abilities }: PokemonAboutProps) {
+export function PokemonAbout({
+  description,
+  height,
+  weight,
+  abilities,
+}: PokemonAboutProps) {
   const capitalize = useCallback(capitalizeHelper, []);
 
   return (
@@ -25,6 +31,12 @@ export function PokemonAbout({ height, weight, abilities }: PokemonAboutProps) {
       <h2>About</h2>
       <table>
         <tbody>
+          <tr>
+            <td className="feature_name">Description</td>
+            <td className="feature_value">
+              {description?.replace(/(\r\n|\n|\r|\f)/gm, ' ')}
+            </td>
+          </tr>
           <tr>
             <td className="feature_name">Height</td>
             <td className="feature_value">
