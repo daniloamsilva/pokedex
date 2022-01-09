@@ -2,10 +2,12 @@ import { useCallback, useEffect, useState } from 'react';
 import { Link, useRouteMatch } from 'react-router-dom';
 import { FaArrowLeft } from 'react-icons/fa';
 
-import { api } from '../../services/api';
+import { usePokemon } from '../../hooks/usePokemon';
 import { capitalizeHelper } from '../../helpers/capitalize';
 
 import { Container, Nav, Header, Title, PokemonImage, Main } from './styles';
+
+import { PokemonAbout } from '../../components/PokemonAbout';
 import { PokemonStats } from '../../components/PokemonStats';
 
 interface PokemonDetailsParams {
@@ -23,7 +25,10 @@ interface Pokemon {
     };
   };
   stats: Stat[];
-  types: PokemonType[];
+  types: Type[];
+  abilities: Ability[];
+  height: number;
+  weight: number;
 }
 
 interface Stat {
@@ -33,24 +38,51 @@ interface Stat {
   };
 }
 
-interface PokemonType {
+interface Type {
   slot: number;
   type: {
     name: string;
   };
 }
 
+interface Ability {
+  ability: {
+    name: string;
+  };
+  is_hidden: boolean;
+}
+
+interface PokemonSpecie {
+  flavor_text_entries: FlavorTextEntrie[];
+}
+
+interface FlavorTextEntrie {
+  flavor_text: string;
+  language: {
+    name: string;
+  };
+}
+
 export function PokemonDetails() {
   const { params } = useRouteMatch<PokemonDetailsParams>();
-  const [pokemon, setPokemon] = useState<null | Pokemon>();
+  const { getPokemon, getPokemonSpecie } = usePokemon();
+
+  const [pokemon, setPokemon] = useState<Pokemon | null>();
+  const [pokemonSpecie, setPokemonSpecie] = useState<PokemonSpecie | null>();
 
   const capitalize = useCallback(capitalizeHelper, []);
 
+  const handleGetPokemon = useCallback(async () => {
+    const pokemonTarget = await getPokemon(parseInt(params.id));
+    setPokemon(pokemonTarget);
+
+    const targetDetails = await getPokemonSpecie(parseInt(params.id));
+    setPokemonSpecie(targetDetails);
+  }, [params, getPokemon, getPokemonSpecie]);
+
   useEffect(() => {
-    api.get(`pokemon/${params.id}`).then(response => {
-      setPokemon(response.data);
-    });
-  }, [params]);
+    handleGetPokemon();
+  }, [handleGetPokemon]);
 
   return (
     <>
@@ -85,6 +117,16 @@ export function PokemonDetails() {
             </Header>
           </Container>
           <Main>
+            <PokemonAbout
+              description={
+                pokemonSpecie?.flavor_text_entries.find(
+                  text => text.language.name === 'en',
+                )?.flavor_text
+              }
+              height={pokemon.height}
+              weight={pokemon.weight}
+              abilities={pokemon.abilities}
+            />
             <PokemonStats
               base_stats={pokemon.stats}
               type={pokemon.types[0].type.name}

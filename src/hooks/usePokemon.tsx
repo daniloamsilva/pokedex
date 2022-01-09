@@ -14,6 +14,8 @@ import { useSearch } from './useSearch';
 interface PokemonContextData {
   pokemonList: Pokemon[];
   setPokemonList: Dispatch<SetStateAction<Pokemon[]>>;
+  getPokemon(id: number): Promise<Pokemon>;
+  getPokemonSpecie(id: number): Promise<PokemonDetails>;
   getPokemonInterval(startId: number, endId: number): Promise<void>;
   getPokemonSearch(matchSearchPokemon: PokemonName[]): Promise<void>;
   getContinueSearchList(): Promise<void>;
@@ -29,18 +31,47 @@ interface Pokemon {
       };
     };
   };
-  types: PokemonType[];
+  stats: Stat[];
+  types: Type[];
+  abilities: Ability[];
+  height: number;
+  weight: number;
 }
 
-interface PokemonType {
+interface Stat {
+  base_stat: number;
+  stat: {
+    name: string;
+  };
+}
+
+interface Type {
   slot: number;
   type: {
     name: string;
   };
 }
 
+interface Ability {
+  ability: {
+    name: string;
+  };
+  is_hidden: boolean;
+}
+
 interface PokemonName {
   name: string;
+}
+
+interface PokemonDetails {
+  flavor_text_entries: FlavorTextEntrie[];
+}
+
+interface FlavorTextEntrie {
+  flavor_text: string;
+  language: {
+    name: string;
+  };
 }
 
 const PokemonContext = createContext<PokemonContextData>(
@@ -51,18 +82,24 @@ const PokemonProvider: React.FC = ({ children }) => {
   const [pokemonList, setPokemonList] = useState<Pokemon[]>([] as Pokemon[]);
   const { search } = useSearch();
 
+  const getPokemon = useCallback(async (id: number) => {
+    const { data } = await Promise.resolve(api.get(`pokemon/${id}`));
+    return data;
+  }, []);
+
+  const getPokemonSpecie = useCallback(async (id: number) => {
+    const { data } = await Promise.resolve(api.get(`pokemon-species/${id}`));
+    return data;
+  }, []);
+
   const getPokemonInterval = useCallback(
     async (startId: number, endId: number) => {
-      const newPokemons: Pokemon[] = [];
-
       for (let index = startId; index <= endId; index++) {
-        const { data } = await Promise.resolve(api.get(`pokemon/${index}`));
-        newPokemons.push(data);
+        const newPokemon = await getPokemon(index);
+        setPokemonList(oldPokemonList => [...oldPokemonList, newPokemon]);
       }
-
-      setPokemonList(oldPokemonList => [...oldPokemonList, ...newPokemons]);
     },
-    [],
+    [getPokemon],
   );
 
   const getPokemonSearch = useCallback(
@@ -122,6 +159,8 @@ const PokemonProvider: React.FC = ({ children }) => {
       value={{
         pokemonList,
         setPokemonList,
+        getPokemon,
+        getPokemonSpecie,
         getPokemonInterval,
         getPokemonSearch,
         getContinueSearchList,
