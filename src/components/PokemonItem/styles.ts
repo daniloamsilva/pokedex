@@ -28,10 +28,6 @@ export const Container = styled.li<ContainerProps>`
   transition: 0.5s;
   background-color: ${props => `var(--color-${props.type}-type-dark)`};
 
-  li {
-    background-color: ${props => `var(--color-${props.type}-type-light)`};
-  }
-
   &:hover {
     transform: translate(0, -10px);
     cursor: pointer;
@@ -70,16 +66,9 @@ export const Section = styled.section<SectionProps>`
   padding-bottom: 20px;
   height: 100%;
 
-  li {
-    border-radius: 20px;
-    list-style-type: none;
-    color: #fff;
-    font-size: 15px;
-    font-weight: bolder;
-    text-align: center;
-    padding: 8px 25px;
-    margin-bottom: 10px;
-    transform: translateY(10px);
+  ul {
+    display: flex;
+    flex-direction: column;
   }
 
   div#pokemon_image {

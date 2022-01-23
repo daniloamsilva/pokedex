@@ -9,6 +9,7 @@ import { Container, Nav, Header, Title, PokemonImage, Main } from './styles';
 
 import { PokemonAbout } from '../../components/PokemonAbout';
 import { PokemonStats } from '../../components/PokemonStats';
+import { PokemonType } from '../../components/PokemonType';
 
 interface PokemonDetailsParams {
   id: string;
@@ -104,7 +105,7 @@ export function PokemonDetails() {
                 </Title>
                 <ul>
                   {pokemon.types.map(type => (
-                    <li key={type.slot}>{capitalize(type.type.name)}</li>
+                    <PokemonType key={type.slot} type={type.type.name} />
                   ))}
                 </ul>
               </div>
@@ -126,6 +127,8 @@ export function PokemonDetails() {
               height={pokemon.height}
               weight={pokemon.weight}
               abilities={pokemon.abilities}
+              resistances={['fighting', 'water', 'grass', 'electric']}
+              weaknesses={['flying', 'fire', 'psychic', 'ice']}
             />
             <PokemonStats
               base_stats={pokemon.stats}

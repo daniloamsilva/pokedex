@@ -3,12 +3,15 @@ import { useCallback } from 'react';
 import { Container } from './styles';
 
 import { capitalizeHelper } from '../../helpers/capitalize';
+import { PokemonType } from '../PokemonType';
 
 interface PokemonAboutProps {
   description: string | undefined;
   height: number;
   weight: number;
   abilities: Ability[];
+  resistances: string[];
+  weaknesses: string[];
 }
 
 interface Ability {
@@ -23,6 +26,8 @@ export function PokemonAbout({
   height,
   weight,
   abilities,
+  resistances,
+  weaknesses,
 }: PokemonAboutProps) {
   const capitalize = useCallback(capitalizeHelper, []);
 
@@ -58,6 +63,26 @@ export function PokemonAbout({
                   capitalize(ability.ability.name).replace('-', ' '),
                 )
                 .join(', ')}
+            </td>
+          </tr>
+          <tr>
+            <td className="feature_name">Resistances</td>
+            <td className="feature_value">
+              <ul>
+                {resistances.map(resistance => (
+                  <PokemonType key={resistance} type={resistance} />
+                ))}
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td className="feature_name">Weaknesses</td>
+            <td className="feature_value">
+              <ul>
+                {weaknesses.map(weakness => (
+                  <PokemonType key={weakness} type={weakness} />
+                ))}
+              </ul>
             </td>
           </tr>
         </tbody>
