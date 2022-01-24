@@ -66,10 +66,13 @@ interface FlavorTextEntrie {
 
 export function PokemonDetails() {
   const { params } = useRouteMatch<PokemonDetailsParams>();
-  const { getPokemon, getPokemonSpecie } = usePokemon();
+  const { getPokemon, getPokemonSpecie, getWeaknessesAndResistances } =
+    usePokemon();
 
   const [pokemon, setPokemon] = useState<Pokemon | null>();
   const [pokemonSpecie, setPokemonSpecie] = useState<PokemonSpecie | null>();
+  const [pokemonWeaknesses, setPokemonWeaknesses] = useState<Array<string>>();
+  const [pokemonResistances, setPokemonResistances] = useState<Array<string>>();
 
   const capitalize = useCallback(capitalizeHelper, []);
 
@@ -81,9 +84,24 @@ export function PokemonDetails() {
     setPokemonSpecie(targetDetails);
   }, [params, getPokemon, getPokemonSpecie]);
 
+  const handleGetPokemonWeaknessesAndResistances = useCallback(async () => {
+    if (pokemon) {
+      const pokemonWeaknessesAndResistances = await getWeaknessesAndResistances(
+        pokemon.types,
+      );
+
+      setPokemonWeaknesses(pokemonWeaknessesAndResistances.weaknesses);
+      setPokemonResistances(pokemonWeaknessesAndResistances.resistances);
+    }
+  }, [pokemon, getWeaknessesAndResistances]);
+
   useEffect(() => {
     handleGetPokemon();
   }, [handleGetPokemon]);
+
+  useEffect(() => {
+    handleGetPokemonWeaknessesAndResistances();
+  }, [pokemon, handleGetPokemonWeaknessesAndResistances]);
 
   return (
     <>
@@ -127,8 +145,8 @@ export function PokemonDetails() {
               height={pokemon.height}
               weight={pokemon.weight}
               abilities={pokemon.abilities}
-              resistances={['fighting', 'water', 'grass', 'electric']}
-              weaknesses={['flying', 'fire', 'psychic', 'ice']}
+              weaknesses={pokemonWeaknesses}
+              resistances={pokemonResistances}
             />
             <PokemonStats
               base_stats={pokemon.stats}

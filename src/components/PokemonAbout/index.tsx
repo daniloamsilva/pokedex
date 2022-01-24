@@ -10,8 +10,8 @@ interface PokemonAboutProps {
   height: number;
   weight: number;
   abilities: Ability[];
-  resistances: string[];
-  weaknesses: string[];
+  weaknesses: Array<string> | undefined;
+  resistances: Array<string> | undefined;
 }
 
 interface Ability {
@@ -26,8 +26,8 @@ export function PokemonAbout({
   height,
   weight,
   abilities,
-  resistances,
   weaknesses,
+  resistances,
 }: PokemonAboutProps) {
   const capitalize = useCallback(capitalizeHelper, []);
 
@@ -66,21 +66,21 @@ export function PokemonAbout({
             </td>
           </tr>
           <tr>
-            <td className="feature_name">Resistances</td>
+            <td className="feature_name">Weaknesses</td>
             <td className="feature_value">
               <ul>
-                {resistances.map(resistance => (
-                  <PokemonType key={resistance} type={resistance} />
+                {weaknesses?.map(weakness => (
+                  <PokemonType key={weakness} type={weakness} />
                 ))}
               </ul>
             </td>
           </tr>
           <tr>
-            <td className="feature_name">Weaknesses</td>
+            <td className="feature_name">Resistances</td>
             <td className="feature_value">
               <ul>
-                {weaknesses.map(weakness => (
-                  <PokemonType key={weakness} type={weakness} />
+                {resistances?.map(resistance => (
+                  <PokemonType key={resistance} type={resistance} />
                 ))}
               </ul>
             </td>

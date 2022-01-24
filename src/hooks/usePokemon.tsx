@@ -10,6 +10,7 @@ import React, {
 
 import { api } from '../services/api';
 import { useSearch } from './useSearch';
+import { removeDuplicates } from '../helpers/removeDuplicates';
 
 interface PokemonContextData {
   pokemonList: Pokemon[];
@@ -19,6 +20,7 @@ interface PokemonContextData {
   getPokemonInterval(startId: number, endId: number): Promise<void>;
   getPokemonSearch(matchSearchPokemon: PokemonName[]): Promise<void>;
   getContinueSearchList(): Promise<void>;
+  getWeaknessesAndResistances(types: Type[]): Promise<WeaknessesAndResistances>;
 }
 
 interface Pokemon {
@@ -71,6 +73,25 @@ interface FlavorTextEntrie {
   flavor_text: string;
   language: {
     name: string;
+  };
+}
+
+interface WeaknessesAndResistances {
+  weaknesses: string[];
+  resistances: string[];
+}
+
+interface TypeDetailsProps {
+  damage_relations: {
+    double_damage_from: Array<{
+      name: string;
+    }>;
+    half_damage_from: Array<{
+      name: string;
+    }>;
+    no_damage_from: Array<{
+      name: string;
+    }>;
   };
 }
 
@@ -150,6 +171,55 @@ const PokemonProvider: React.FC = ({ children }) => {
     await getPokemonInterval(1, 52);
   }, [getPokemonInterval]);
 
+  const getWeaknessesAndResistances = useCallback(
+    async (types: Type[]): Promise<WeaknessesAndResistances> => {
+      const allWeaknesses: Array<string> = [];
+      const allResistances: Array<string> = [];
+      const allNoDamages: Array<string> = [];
+
+      for (let index = 0; index < types.length; index++) {
+        const { data } = await Promise.resolve(
+          api.get(`type/${types[index].type.name}`),
+        );
+
+        const typeDetails = data as TypeDetailsProps;
+
+        allWeaknesses.push(
+          ...typeDetails.damage_relations.double_damage_from.map(
+            doubleDamageType => doubleDamageType.name,
+          ),
+        );
+
+        allResistances.push(
+          ...typeDetails.damage_relations.half_damage_from.map(
+            halfDamageType => halfDamageType.name,
+          ),
+        );
+
+        allNoDamages.push(
+          ...typeDetails.damage_relations.no_damage_from.map(
+            noDamageType => noDamageType.name,
+          ),
+        );
+      }
+
+      const weaknesses = removeDuplicates(
+        allWeaknesses
+          .filter(weakness => !allResistances.includes(weakness))
+          .filter(weakness => !allNoDamages.includes(weakness)),
+      ).sort();
+
+      const resistances = removeDuplicates(
+        allResistances.filter(
+          resistance => !allWeaknesses.includes(resistance),
+        ),
+      ).sort();
+
+      return { weaknesses, resistances };
+    },
+    [],
+  );
+
   useEffect(() => {
     getInitialPokemonList();
   }, [getInitialPokemonList]);
@@ -164,6 +234,7 @@ const PokemonProvider: React.FC = ({ children }) => {
         getPokemonInterval,
         getPokemonSearch,
         getContinueSearchList,
+        getWeaknessesAndResistances,
       }}
     >
       {children}
