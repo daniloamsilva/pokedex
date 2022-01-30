@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { Link, useRouteMatch } from 'react-router-dom';
+import { useRouteMatch, useHistory } from 'react-router-dom';
 import { FaArrowLeft } from 'react-icons/fa';
 
 import { usePokemon } from '../../hooks/usePokemon';
@@ -65,6 +65,7 @@ interface FlavorTextEntrie {
 }
 
 export function PokemonDetails() {
+  const history = useHistory();
   const { params } = useRouteMatch<PokemonDetailsParams>();
   const { getPokemon, getPokemonSpecie, getWeaknessesAndResistances } =
     usePokemon();
@@ -111,9 +112,9 @@ export function PokemonDetails() {
         <>
           <Container type={pokemon.types[0].type.name}>
             <Nav className="width_limit">
-              <Link id="back_button" to="/">
+              <button type="button" id="back_button" onClick={history.goBack}>
                 <FaArrowLeft id="arrow_left_icon" />
-              </Link>
+              </button>
             </Nav>
             <Header className="width_limit">
               <div id="infos">
