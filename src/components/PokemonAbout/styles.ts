@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 
 export const Container = styled.section`
-  width: 100%;
   border-radius: 30px;
   padding: 30px;
   box-shadow: 0px 0px 15px -5px #595959;
@@ -25,6 +24,15 @@ export const Container = styled.section`
       padding: 0 20px;
       font-weight: bold;
       font-size: 18px;
+    }
+
+    ul {
+      display: flex;
+      flex-wrap: wrap;
+
+      li {
+        margin-right: 5px;
+      }
     }
   }
 `;

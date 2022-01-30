@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { Link, useRouteMatch } from 'react-router-dom';
+import { useRouteMatch, useHistory } from 'react-router-dom';
 import { FaArrowLeft } from 'react-icons/fa';
 
 import { usePokemon } from '../../hooks/usePokemon';
@@ -9,6 +9,7 @@ import { Container, Nav, Header, Title, PokemonImage, Main } from './styles';
 
 import { PokemonAbout } from '../../components/PokemonAbout';
 import { PokemonStats } from '../../components/PokemonStats';
+import { PokemonType } from '../../components/PokemonType';
 
 interface PokemonDetailsParams {
   id: string;
@@ -64,11 +65,15 @@ interface FlavorTextEntrie {
 }
 
 export function PokemonDetails() {
+  const history = useHistory();
   const { params } = useRouteMatch<PokemonDetailsParams>();
-  const { getPokemon, getPokemonSpecie } = usePokemon();
+  const { getPokemon, getPokemonSpecie, getWeaknessesAndResistances } =
+    usePokemon();
 
   const [pokemon, setPokemon] = useState<Pokemon | null>();
   const [pokemonSpecie, setPokemonSpecie] = useState<PokemonSpecie | null>();
+  const [pokemonWeaknesses, setPokemonWeaknesses] = useState<Array<string>>();
+  const [pokemonResistances, setPokemonResistances] = useState<Array<string>>();
 
   const capitalize = useCallback(capitalizeHelper, []);
 
@@ -80,9 +85,24 @@ export function PokemonDetails() {
     setPokemonSpecie(targetDetails);
   }, [params, getPokemon, getPokemonSpecie]);
 
+  const handleGetPokemonWeaknessesAndResistances = useCallback(async () => {
+    if (pokemon) {
+      const pokemonWeaknessesAndResistances = await getWeaknessesAndResistances(
+        pokemon.types,
+      );
+
+      setPokemonWeaknesses(pokemonWeaknessesAndResistances.weaknesses);
+      setPokemonResistances(pokemonWeaknessesAndResistances.resistances);
+    }
+  }, [pokemon, getWeaknessesAndResistances]);
+
   useEffect(() => {
     handleGetPokemon();
   }, [handleGetPokemon]);
+
+  useEffect(() => {
+    handleGetPokemonWeaknessesAndResistances();
+  }, [pokemon, handleGetPokemonWeaknessesAndResistances]);
 
   return (
     <>
@@ -92,9 +112,9 @@ export function PokemonDetails() {
         <>
           <Container type={pokemon.types[0].type.name}>
             <Nav className="width_limit">
-              <Link id="back_button" to="/">
+              <button type="button" id="back_button" onClick={history.goBack}>
                 <FaArrowLeft id="arrow_left_icon" />
-              </Link>
+              </button>
             </Nav>
             <Header className="width_limit">
               <div id="infos">
@@ -104,7 +124,7 @@ export function PokemonDetails() {
                 </Title>
                 <ul>
                   {pokemon.types.map(type => (
-                    <li key={type.slot}>{capitalize(type.type.name)}</li>
+                    <PokemonType key={type.slot} type={type.type.name} />
                   ))}
                 </ul>
               </div>
@@ -126,6 +146,8 @@ export function PokemonDetails() {
               height={pokemon.height}
               weight={pokemon.weight}
               abilities={pokemon.abilities}
+              weaknesses={pokemonWeaknesses}
+              resistances={pokemonResistances}
             />
             <PokemonStats
               base_stats={pokemon.stats}

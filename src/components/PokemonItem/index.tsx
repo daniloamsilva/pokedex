@@ -2,6 +2,7 @@ import { useCallback } from 'react';
 import { Link } from 'react-router-dom';
 
 import { capitalizeHelper } from '../../helpers/capitalize';
+import { PokemonType } from '../PokemonType';
 
 import { Container, Index, Header, Section } from './styles';
 
@@ -20,10 +21,10 @@ interface Pokemon {
       };
     };
   };
-  types: PokemonType[];
+  types: Type[];
 }
 
-interface PokemonType {
+interface Type {
   slot: number;
   type: {
     name: string;
@@ -43,7 +44,7 @@ export function PokemonItem({ pokemon, sprite }: PokemonItemProps) {
         <Section sprite={sprite}>
           <ul>
             {pokemon.types.map(type => (
-              <li key={type.slot}>{capitalize(type.type.name)}</li>
+              <PokemonType key={type.slot} type={type.type.name} />
             ))}
           </ul>
           <div id="pokemon_image" />
