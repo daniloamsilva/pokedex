@@ -17,6 +17,7 @@ interface PokemonContextData {
   setPokemonList: Dispatch<SetStateAction<Pokemon[]>>;
   getPokemon(id: number): Promise<Pokemon>;
   getPokemonSpecie(id: number): Promise<PokemonDetails>;
+  getEvolutionChain(pokemonDetails: PokemonDetails): Promise<EvolutionChain>;
   getPokemonInterval(startId: number, endId: number): Promise<void>;
   getPokemonSearch(matchSearchPokemon: PokemonName[]): Promise<void>;
   getContinueSearchList(): Promise<void>;
@@ -67,6 +68,20 @@ interface PokemonName {
 
 interface PokemonDetails {
   flavor_text_entries: FlavorTextEntrie[];
+  evolution_chain: {
+    url: string;
+  };
+}
+
+interface EvolutionChain {
+  chain: Chain;
+}
+
+interface Chain {
+  evolves_to: Array<Chain>;
+  species: {
+    name: string;
+  };
 }
 
 interface FlavorTextEntrie {
@@ -112,6 +127,18 @@ const PokemonProvider: React.FC = ({ children }) => {
     const { data } = await Promise.resolve(api.get(`pokemon-species/${id}`));
     return data;
   }, []);
+
+  const getEvolutionChain = useCallback(
+    async (pokemonDetails: PokemonDetails) => {
+      const chainId = pokemonDetails.evolution_chain.url.slice(42, -1);
+      const { data } = await Promise.resolve(
+        api.get(`evolution-chain/${chainId}`),
+      );
+
+      return data;
+    },
+    [],
+  );
 
   const getPokemonInterval = useCallback(
     async (startId: number, endId: number) => {
@@ -231,6 +258,7 @@ const PokemonProvider: React.FC = ({ children }) => {
         setPokemonList,
         getPokemon,
         getPokemonSpecie,
+        getEvolutionChain,
         getPokemonInterval,
         getPokemonSearch,
         getContinueSearchList,

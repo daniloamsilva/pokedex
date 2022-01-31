@@ -8,6 +8,7 @@ import { capitalizeHelper } from '../../helpers/capitalize';
 import { Container, Nav, Header, Title, PokemonImage, Main } from './styles';
 
 import { PokemonAbout } from '../../components/PokemonAbout';
+import { PokemonEvoluationChain } from '../../components/PokemonEvolutionChain';
 import { PokemonStats } from '../../components/PokemonStats';
 import { PokemonType } from '../../components/PokemonType';
 
@@ -55,6 +56,20 @@ interface Ability {
 
 interface PokemonSpecie {
   flavor_text_entries: FlavorTextEntrie[];
+  evolution_chain: {
+    url: string;
+  };
+}
+
+interface EvolutionChain {
+  chain: Chain;
+}
+
+interface Chain {
+  evolves_to: Array<Chain>;
+  species: {
+    name: string;
+  };
 }
 
 interface FlavorTextEntrie {
@@ -67,13 +82,19 @@ interface FlavorTextEntrie {
 export function PokemonDetails() {
   const history = useHistory();
   const { params } = useRouteMatch<PokemonDetailsParams>();
-  const { getPokemon, getPokemonSpecie, getWeaknessesAndResistances } =
-    usePokemon();
+  const {
+    getPokemon,
+    getPokemonSpecie,
+    getWeaknessesAndResistances,
+    getEvolutionChain,
+  } = usePokemon();
 
   const [pokemon, setPokemon] = useState<Pokemon | null>();
   const [pokemonSpecie, setPokemonSpecie] = useState<PokemonSpecie | null>();
   const [pokemonWeaknesses, setPokemonWeaknesses] = useState<Array<string>>();
   const [pokemonResistances, setPokemonResistances] = useState<Array<string>>();
+  const [pokemonEvolutionChain, setPokemonEvolutionChain] =
+    useState<EvolutionChain | null>();
 
   const capitalize = useCallback(capitalizeHelper, []);
 
@@ -83,7 +104,10 @@ export function PokemonDetails() {
 
     const targetDetails = await getPokemonSpecie(parseInt(params.id));
     setPokemonSpecie(targetDetails);
-  }, [params, getPokemon, getPokemonSpecie]);
+
+    const evolutionChain = await getEvolutionChain(targetDetails);
+    setPokemonEvolutionChain(evolutionChain);
+  }, [params, getPokemon, getPokemonSpecie, getEvolutionChain]);
 
   const handleGetPokemonWeaknessesAndResistances = useCallback(async () => {
     if (pokemon) {
@@ -137,22 +161,31 @@ export function PokemonDetails() {
             </Header>
           </Container>
           <Main>
-            <PokemonAbout
-              description={
-                pokemonSpecie?.flavor_text_entries.find(
-                  text => text.language.name === 'en',
-                )?.flavor_text
-              }
-              height={pokemon.height}
-              weight={pokemon.weight}
-              abilities={pokemon.abilities}
-              weaknesses={pokemonWeaknesses}
-              resistances={pokemonResistances}
-            />
-            <PokemonStats
-              base_stats={pokemon.stats}
-              type={pokemon.types[0].type.name}
-            />
+            <div id="firstLine">
+              <PokemonAbout
+                description={
+                  pokemonSpecie?.flavor_text_entries.find(
+                    text => text.language.name === 'en',
+                  )?.flavor_text
+                }
+                height={pokemon.height}
+                weight={pokemon.weight}
+                abilities={pokemon.abilities}
+                weaknesses={pokemonWeaknesses}
+                resistances={pokemonResistances}
+              />
+              <PokemonStats
+                base_stats={pokemon.stats}
+                type={pokemon.types[0].type.name}
+              />
+            </div>
+            <div>
+              {pokemonEvolutionChain && (
+                <PokemonEvoluationChain
+                  evolutionChain={pokemonEvolutionChain}
+                />
+              )}
+            </div>
           </Main>
         </>
       )}

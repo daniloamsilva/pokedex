@@ -101,17 +101,20 @@ export const PokemonImage = styled.div`
 export const Main = styled.main`
   max-width: 1200px;
   margin: 0 auto;
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  grid-gap: 20px;
-  margin-bottom: 10px;
   padding: 30px 20px;
 
-  @media (max-width: 550px) {
-    grid-template-columns: repeat(1, 1fr);
-  }
+  #firstLine {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 20px;
+    margin-bottom: 10px;
 
-  @media (max-width: 500px) {
-    padding: 50px 10px;
+    @media (max-width: 550px) {
+      grid-template-columns: repeat(1, 1fr);
+    }
+
+    @media (max-width: 500px) {
+      padding: 50px 10px;
+    }
   }
 `;
