@@ -81,6 +81,7 @@ interface Chain {
   evolves_to: Array<Chain>;
   species: {
     name: string;
+    url: string;
   };
 }
 
