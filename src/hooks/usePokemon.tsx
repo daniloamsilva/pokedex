@@ -22,6 +22,7 @@ interface PokemonContextData {
   getPokemonSearch(matchSearchPokemon: PokemonName[]): Promise<void>;
   getContinueSearchList(): Promise<void>;
   getWeaknessesAndResistances(types: Type[]): Promise<WeaknessesAndResistances>;
+  getPokemonImage(id: string): string;
 }
 
 interface Pokemon {
@@ -248,6 +249,10 @@ const PokemonProvider: React.FC = ({ children }) => {
     [],
   );
 
+  const getPokemonImage = useCallback((id: string) => {
+    return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`;
+  }, []);
+
   useEffect(() => {
     getInitialPokemonList();
   }, [getInitialPokemonList]);
@@ -264,6 +269,7 @@ const PokemonProvider: React.FC = ({ children }) => {
         getPokemonSearch,
         getContinueSearchList,
         getWeaknessesAndResistances,
+        getPokemonImage,
       }}
     >
       {children}
