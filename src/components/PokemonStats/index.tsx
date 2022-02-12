@@ -47,7 +47,10 @@ export function PokemonStats({ base_stats, type }: PokemonStatsProps) {
               <td className="stat_value">{stat.base_stat}</td>
               <td className="stat_bar">
                 <div className="stat_bar_background">
-                  <StatBar percentage={stat.base_stat / 2} type={type}>
+                  <StatBar
+                    percentage={(stat.base_stat / 250) * 100}
+                    type={type}
+                  >
                     .
                   </StatBar>
                 </div>
@@ -68,7 +71,7 @@ export function PokemonStats({ base_stats, type }: PokemonStatsProps) {
                       0,
                     ) *
                       100) /
-                    1200
+                    1500
                   }
                   type={type}
                 >
