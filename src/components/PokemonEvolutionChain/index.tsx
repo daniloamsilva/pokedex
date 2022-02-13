@@ -2,7 +2,7 @@ import { ReactElement, useCallback } from 'react';
 import { FaChevronRight } from 'react-icons/fa';
 
 import { capitalizeHelper } from '../../helpers/capitalize';
-import { Container, EvoluationsWrap, Stage, Evolution } from './styles';
+import { Container, EvoluationsWrap, Stage, Evolution, Name } from './styles';
 
 import { usePokemon } from '../../hooks/usePokemon';
 
@@ -39,7 +39,12 @@ export function PokemonEvoluationChain({
                     src={getPokemonImage(evolve.species.url.slice(42, -1))}
                     alt={evolve.species.name}
                   />
-                  <p>{capitalizeHelper(evolve.species.name)}</p>
+                  <Name>
+                    <h3>{capitalizeHelper(evolve.species.name)}</h3>
+                    <span>
+                      #{`000${evolve.species.url.slice(42, -1)}`.slice(-3)}
+                    </span>
+                  </Name>
                 </Evolution>
               ))}
             </Stage>
@@ -64,13 +69,15 @@ export function PokemonEvoluationChain({
             <Stage id="firstStage">
               <Evolution>
                 <img
-                  src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${chain.species.url.slice(
-                    42,
-                    -1,
-                  )}.png`}
+                  src={getPokemonImage(chain.species.url.slice(42, -1))}
                   alt={chain.species.name}
                 />
-                <p>{capitalizeHelper(chain.species.name)}</p>
+                <Name>
+                  <h3>{capitalizeHelper(chain.species.name)}</h3>
+                  <span>
+                    #{`000${chain.species.url.slice(42, -1)}`.slice(-3)}
+                  </span>
+                </Name>
               </Evolution>
             </Stage>
             {!!chain.evolves_to.length && (
@@ -81,7 +88,7 @@ export function PokemonEvoluationChain({
         </Container>
       );
     },
-    [handleEvolves],
+    [handleEvolves, getPokemonImage],
   );
 
   return handleFirstStage(evolutionChain.chain);

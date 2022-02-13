@@ -60,3 +60,20 @@ export const Evolution = styled.div`
     width: 200px;
   }
 `;
+
+export const Name = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 20px;
+
+  h3 {
+    margin-right: 10px;
+  }
+
+  span {
+    font-weight: 900;
+    font-size: 18px;
+    opacity: 0.5;
+  }
+`;
