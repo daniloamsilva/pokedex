@@ -66,6 +66,10 @@ export default createGlobalStyle`
     box-sizing: border-box;
   }
 
+  html {
+    scroll-behavior: smooth;
+  }
+
   body {
     background-color: #FFFFFF;
     background-image: url(${imgPokeball});
