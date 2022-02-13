@@ -52,7 +52,7 @@ export function PokemonEvoluationChain({
               ))}
             </Stage>
             {!!chains[0].evolves_to.length && (
-              <FaChevronRight className="arrow_left_icon" />
+              <FaChevronRight className="arrow_right_icon" />
             )}
             {chains.map(evolve => handleEvolves(evolve.evolves_to))}
           </>
@@ -86,7 +86,7 @@ export function PokemonEvoluationChain({
               </Link>
             </Stage>
             {!!chain.evolves_to.length && (
-              <FaChevronRight className="arrow_left_icon" />
+              <FaChevronRight className="arrow_right_icon" />
             )}
             {handleEvolves(chain.evolves_to)}
           </EvoluationsWrap>

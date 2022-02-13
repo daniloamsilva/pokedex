@@ -13,10 +13,19 @@ export const EvoluationsWrap = styled.div`
   justify-content: space-around;
   margin-top: 20px;
 
-  .arrow_left_icon {
+  @media (max-width: 850px) {
+    flex-direction: column;
+  }
+
+  .arrow_right_icon {
     font-size: 50px;
     color: grey;
     align-self: center;
+
+    @media (max-width: 850px) {
+      transform: rotate(90deg);
+      margin-top: 20px;
+    }
   }
 `;
 
@@ -38,16 +47,31 @@ export const Stage = styled.div`
   &.evolves2 {
     grid-template-rows: repeat(2, 1fr);
     grid-template-columns: repeat(1, 1fr);
+
+    @media (max-width: 850px) {
+      grid-template-rows: repeat(1, 1fr);
+      grid-template-columns: repeat(2, 1fr);
+    }
   }
 
   &.evolves3 {
     grid-template-rows: repeat(1, 1fr);
     grid-template-columns: repeat(3, 1fr);
+
+    @media (max-width: 850px) {
+      grid-template-rows: repeat(2, 1fr);
+      grid-template-columns: repeat(2, 1fr);
+    }
   }
 
   &.evolves8 {
     grid-template-rows: repeat(2, 1fr);
     grid-template-columns: repeat(4, 1fr);
+
+    @media (max-width: 1110px) {
+      grid-template-rows: repeat(4, 1fr);
+      grid-template-columns: repeat(2, 1fr);
+    }
   }
 `;
 
@@ -64,6 +88,10 @@ export const Evolution = styled.div`
 
   img {
     width: 200px;
+
+    @media (max-width: 850px) {
+      width: 55%;
+    }
   }
 `;
 
