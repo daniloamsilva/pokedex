@@ -16,8 +16,6 @@ export const Container = styled.div<ContainerProps>`
   #back_button {
     color: white;
     transition: color 0.2s;
-    border: none;
-    background: Transparent;
 
     &:hover {
       color: ${shade(0.2, 'white')};

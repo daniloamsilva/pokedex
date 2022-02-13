@@ -55,6 +55,12 @@ export const Evolution = styled.div`
   text-align: center;
   float: left;
   padding: 5px;
+  transition: 0.5s;
+
+  &:hover {
+    transform: translate(0, -10px);
+    cursor: pointer;
+  }
 
   img {
     width: 200px;
@@ -69,11 +75,13 @@ export const Name = styled.div`
 
   h3 {
     margin-right: 10px;
+    color: black;
   }
 
   span {
     font-weight: 900;
     font-size: 18px;
     opacity: 0.5;
+    color: black;
   }
 `;

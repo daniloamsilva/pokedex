@@ -1,4 +1,5 @@
 import { ReactElement, useCallback } from 'react';
+import { Link } from 'react-router-dom';
 import { FaChevronRight } from 'react-icons/fa';
 
 import { capitalizeHelper } from '../../helpers/capitalize';
@@ -34,18 +35,20 @@ export function PokemonEvoluationChain({
           <>
             <Stage className={`evolves${chains.length}`}>
               {chains.map(evolve => (
-                <Evolution>
-                  <img
-                    src={getPokemonImage(evolve.species.url.slice(42, -1))}
-                    alt={evolve.species.name}
-                  />
-                  <Name>
-                    <h3>{capitalizeHelper(evolve.species.name)}</h3>
-                    <span>
-                      #{`000${evolve.species.url.slice(42, -1)}`.slice(-3)}
-                    </span>
-                  </Name>
-                </Evolution>
+                <Link to={`/details/${evolve.species.url.slice(42, -1)}`}>
+                  <Evolution>
+                    <img
+                      src={getPokemonImage(evolve.species.url.slice(42, -1))}
+                      alt={evolve.species.name}
+                    />
+                    <Name>
+                      <h3>{capitalizeHelper(evolve.species.name)}</h3>
+                      <span>
+                        #{`000${evolve.species.url.slice(42, -1)}`.slice(-3)}
+                      </span>
+                    </Name>
+                  </Evolution>
+                </Link>
               ))}
             </Stage>
             {!!chains[0].evolves_to.length && (
@@ -67,18 +70,20 @@ export function PokemonEvoluationChain({
           <h2>Evolution</h2>
           <EvoluationsWrap>
             <Stage id="firstStage">
-              <Evolution>
-                <img
-                  src={getPokemonImage(chain.species.url.slice(42, -1))}
-                  alt={chain.species.name}
-                />
-                <Name>
-                  <h3>{capitalizeHelper(chain.species.name)}</h3>
-                  <span>
-                    #{`000${chain.species.url.slice(42, -1)}`.slice(-3)}
-                  </span>
-                </Name>
-              </Evolution>
+              <Link to={`/details/${chain.species.url.slice(42, -1)}`}>
+                <Evolution>
+                  <img
+                    src={getPokemonImage(chain.species.url.slice(42, -1))}
+                    alt={chain.species.name}
+                  />
+                  <Name>
+                    <h3>{capitalizeHelper(chain.species.name)}</h3>
+                    <span>
+                      #{`000${chain.species.url.slice(42, -1)}`.slice(-3)}
+                    </span>
+                  </Name>
+                </Evolution>
+              </Link>
             </Stage>
             {!!chain.evolves_to.length && (
               <FaChevronRight className="arrow_left_icon" />
