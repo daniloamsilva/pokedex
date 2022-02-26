@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import { capitalizeHelper } from '../../helpers/capitalize';
 
@@ -18,23 +18,26 @@ interface Stat {
 
 export function PokemonStats({ base_stats, type }: PokemonStatsProps) {
   const capitalize = useCallback(capitalizeHelper, []);
+  const [stats, setStats] = useState(base_stats);
 
-  const [stats] = useState(() => {
-    return base_stats.map(stat => {
-      switch (stat.stat.name) {
-        case 'special-attack':
-          stat.stat.name = 'Sp. Atk';
-          break;
-        case 'special-defense':
-          stat.stat.name = 'Sp. Def';
-          break;
-        default:
-          break;
-      }
+  useEffect(() => {
+    setStats(
+      base_stats.map(stat => {
+        switch (stat.stat.name) {
+          case 'special-attack':
+            stat.stat.name = 'Sp. Atk';
+            break;
+          case 'special-defense':
+            stat.stat.name = 'Sp. Def';
+            break;
+          default:
+            break;
+        }
 
-      return stat;
-    });
-  });
+        return stat;
+      }),
+    );
+  }, [base_stats]);
 
   return (
     <Container>

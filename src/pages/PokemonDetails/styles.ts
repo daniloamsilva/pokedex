@@ -13,7 +13,7 @@ export const Container = styled.div<ContainerProps>`
     margin: 0 auto;
   }
 
-  #back_button {
+  .icon_button {
     color: white;
     transition: color 0.2s;
 
@@ -23,6 +23,14 @@ export const Container = styled.div<ContainerProps>`
 
     #arrow_left_icon {
       font-size: 25px;
+    }
+
+    #chevron_left_icon {
+      margin-right: 10px;
+    }
+
+    #chevron_right_icon {
+      margin-left: 10px;
     }
   }
 `;
@@ -34,7 +42,7 @@ export const Nav = styled.nav`
 export const Header = styled.header`
   display: flex;
   align-items: center;
-  justify-content: space-around;
+  justify-content: space-between;
   padding: 20px 20px;
   color: #fff;
   font-weight: bolder;
@@ -57,6 +65,10 @@ export const Header = styled.header`
   @media (max-width: 500px) {
     #infos {
       transform: translateY(15px);
+    }
+
+    .icon_button {
+      display: none;
     }
   }
 `;
@@ -84,15 +96,23 @@ export const Title = styled.div`
 
 export const PokemonImage = styled.div`
   display: flex;
-  justify-content: center;
-  align-items: flex-start;
+  justify-content: space-around;
+  align-items: center;
 
   img {
     width: 55%;
   }
 
+  .icon_button {
+    display: none;
+  }
+
   @media (max-width: 500px) {
     transform: translateY(35px);
+
+    .icon_button {
+      display: inline;
+    }
   }
 `;
 
