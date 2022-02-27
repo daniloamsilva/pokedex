@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Link, useRouteMatch } from 'react-router-dom';
-import { FaArrowLeft } from 'react-icons/fa';
+import { FaArrowLeft, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 
 import { usePokemon } from '../../hooks/usePokemon';
 import { capitalizeHelper } from '../../helpers/capitalize';
@@ -137,11 +137,18 @@ export function PokemonDetails() {
         <>
           <Container type={pokemon.types[0].type.name}>
             <Nav className="width_limit">
-              <Link id="back_button" to="/">
+              <Link className="icon_button" to="/">
                 <FaArrowLeft id="arrow_left_icon" />
               </Link>
             </Nav>
             <Header className="width_limit">
+              {pokemon.id > 1 ? (
+                <Link className="icon_button" to={`/details/${pokemon.id - 1}`}>
+                  <FaChevronLeft id="chevron_left_icon" />
+                </Link>
+              ) : (
+                <div />
+              )}
               <div id="infos">
                 <Title>
                   <h1>{capitalize(pokemon.name)}</h1>
@@ -154,11 +161,38 @@ export function PokemonDetails() {
                 </ul>
               </div>
               <PokemonImage>
+                {pokemon.id > 1 ? (
+                  <Link
+                    className="icon_button"
+                    to={`/details/${pokemon.id - 1}`}
+                  >
+                    <FaChevronLeft id="chevron_left_icon" />
+                  </Link>
+                ) : (
+                  <div />
+                )}
                 <img
                   src={pokemon.sprites.other['official-artwork'].front_default}
                   alt="Pokemon art"
                 />
+                {pokemon.id < 898 ? (
+                  <Link
+                    className="icon_button"
+                    to={`/details/${pokemon.id + 1}`}
+                  >
+                    <FaChevronRight id="chevron_left_icon" />
+                  </Link>
+                ) : (
+                  <div />
+                )}
               </PokemonImage>
+              {pokemon.id < 898 ? (
+                <Link className="icon_button" to={`/details/${pokemon.id + 1}`}>
+                  <FaChevronRight id="chevron_left_icon" />
+                </Link>
+              ) : (
+                <div />
+              )}
             </Header>
           </Container>
           <Main>
