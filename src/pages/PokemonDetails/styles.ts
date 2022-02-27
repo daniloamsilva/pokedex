@@ -136,3 +136,9 @@ export const Main = styled.main`
     }
   }
 `;
+
+export const VariantSection = styled.section`
+  display: flex;
+  justify-content: flex-end;
+  position: relative;
+`;

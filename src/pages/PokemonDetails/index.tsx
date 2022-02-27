@@ -5,12 +5,21 @@ import { FaArrowLeft, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import { usePokemon } from '../../hooks/usePokemon';
 import { capitalizeHelper } from '../../helpers/capitalize';
 
-import { Container, Nav, Header, Title, PokemonImage, Main } from './styles';
+import {
+  Container,
+  Nav,
+  Header,
+  Title,
+  PokemonImage,
+  Main,
+  VariantSection,
+} from './styles';
 
 import { PokemonAbout } from '../../components/PokemonAbout';
 import { PokemonEvoluationChain } from '../../components/PokemonEvolutionChain';
 import { PokemonStats } from '../../components/PokemonStats';
 import { PokemonType } from '../../components/PokemonType';
+import { PokemonVariants } from '../../components/PokemonVariants';
 
 interface PokemonDetailsParams {
   id: string;
@@ -196,7 +205,12 @@ export function PokemonDetails() {
             </Header>
           </Container>
           <Main>
-            <div id="firstLine">
+            {true && (
+              <VariantSection>
+                <PokemonVariants />
+              </VariantSection>
+            )}
+            <section id="firstLine">
               <PokemonAbout
                 description={
                   pokemonSpecie?.flavor_text_entries.find(
@@ -213,14 +227,14 @@ export function PokemonDetails() {
                 base_stats={pokemon.stats}
                 type={pokemon.types[0].type.name}
               />
-            </div>
-            <div>
+            </section>
+            <section>
               {pokemonEvolutionChain && (
                 <PokemonEvoluationChain
                   evolutionChain={pokemonEvolutionChain}
                 />
               )}
-            </div>
+            </section>
           </Main>
         </>
       )}
