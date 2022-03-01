@@ -12,14 +12,14 @@ import {
   Title,
   PokemonImage,
   Main,
-  VariantSection,
+  VarietySection,
 } from './styles';
 
 import { PokemonAbout } from '../../components/PokemonAbout';
 import { PokemonEvoluationChain } from '../../components/PokemonEvolutionChain';
 import { PokemonStats } from '../../components/PokemonStats';
 import { PokemonType } from '../../components/PokemonType';
-import { PokemonVariants } from '../../components/PokemonVariants';
+import { PokemonVarieties } from '../../components/PokemonVarieties';
 
 interface PokemonDetailsParams {
   id: string;
@@ -68,6 +68,7 @@ interface PokemonSpecie {
   evolution_chain: {
     url: string;
   };
+  varieties: Variety[];
 }
 
 interface EvolutionChain {
@@ -89,6 +90,13 @@ interface FlavorTextEntrie {
   };
 }
 
+interface Variety {
+  pokemon: {
+    name: string;
+    url: string;
+  };
+}
+
 export function PokemonDetails() {
   const { params } = useRouteMatch<PokemonDetailsParams>();
   const {
@@ -100,6 +108,7 @@ export function PokemonDetails() {
 
   const [pokemon, setPokemon] = useState<Pokemon | null>();
   const [pokemonSpecie, setPokemonSpecie] = useState<PokemonSpecie | null>();
+  const [pokemonVarieties, setPokemonVarieties] = useState<Variety[]>([]);
   const [pokemonWeaknesses, setPokemonWeaknesses] = useState<Array<string>>();
   const [pokemonResistances, setPokemonResistances] = useState<Array<string>>();
   const [pokemonEvolutionChain, setPokemonEvolutionChain] =
@@ -108,11 +117,12 @@ export function PokemonDetails() {
   const capitalize = useCallback(capitalizeHelper, []);
 
   const handleGetPokemon = useCallback(async () => {
-    const pokemonTarget = await getPokemon(parseInt(params.id));
+    const pokemonTarget = await getPokemon(params.id);
     setPokemon(pokemonTarget);
 
-    const targetDetails = await getPokemonSpecie(parseInt(params.id));
+    const targetDetails = await getPokemonSpecie(params.id.toString());
     setPokemonSpecie(targetDetails);
+    setPokemonVarieties(targetDetails.varieties);
 
     const evolutionChain = await getEvolutionChain(targetDetails);
     setPokemonEvolutionChain(evolutionChain);
@@ -205,10 +215,13 @@ export function PokemonDetails() {
             </Header>
           </Container>
           <Main>
-            {true && (
-              <VariantSection>
-                <PokemonVariants />
-              </VariantSection>
+            {pokemonVarieties.length > 1 && (
+              <VarietySection>
+                <PokemonVarieties
+                  varieties={pokemonVarieties}
+                  selected={pokemon.name}
+                />
+              </VarietySection>
             )}
             <section id="firstLine">
               <PokemonAbout

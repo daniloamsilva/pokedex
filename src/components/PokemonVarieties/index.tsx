@@ -1,7 +1,24 @@
 import { useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
+import { capitalizeHelper } from '../../helpers/capitalize';
 import { Select } from './stylse';
 
-export function PokemonVariants() {
+interface PokemonVarietiesProps {
+  varieties: Variety[];
+  selected: string;
+}
+
+interface Variety {
+  pokemon: {
+    name: string;
+    url: string;
+  };
+}
+
+export function PokemonVarieties({
+  varieties,
+  selected,
+}: PokemonVarietiesProps) {
   const selectSelectedRef = useRef<HTMLDivElement>(null);
   const selectItemsRef = useRef<HTMLDivElement>(null);
 
@@ -22,12 +39,16 @@ export function PokemonVariants() {
   return (
     <Select>
       <div className="select-selected" ref={selectSelectedRef}>
-        Venusaur
+        {capitalizeHelper(selected)}
       </div>
       <div className="select-items select-hide" ref={selectItemsRef}>
-        <div className="variant-option">Venusaur</div>
-        <div className="variant-option">Mega Venusaur</div>
-        <div className="variant-option">Gigantamax Venusaur</div>
+        {varieties.map(variety => (
+          <div key={variety.pokemon.name} className="variety-option">
+            <Link to={`/details/${variety.pokemon.name}`}>
+              {capitalizeHelper(variety.pokemon.name)}
+            </Link>
+          </div>
+        ))}
       </div>
     </Select>
   );

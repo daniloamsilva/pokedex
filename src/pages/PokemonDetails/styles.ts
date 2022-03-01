@@ -137,7 +137,7 @@ export const Main = styled.main`
   }
 `;
 
-export const VariantSection = styled.section`
+export const VarietySection = styled.section`
   display: flex;
   justify-content: flex-end;
   position: relative;

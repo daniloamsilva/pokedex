@@ -15,8 +15,8 @@ import { removeDuplicates } from '../helpers/removeDuplicates';
 interface PokemonContextData {
   pokemonList: Pokemon[];
   setPokemonList: Dispatch<SetStateAction<Pokemon[]>>;
-  getPokemon(id: number): Promise<Pokemon>;
-  getPokemonSpecie(id: number): Promise<PokemonDetails>;
+  getPokemon(id: string): Promise<Pokemon>;
+  getPokemonSpecie(id: string): Promise<PokemonDetails>;
   getEvolutionChain(pokemonDetails: PokemonDetails): Promise<EvolutionChain>;
   getPokemonInterval(startId: number, endId: number): Promise<void>;
   getPokemonSearch(matchSearchPokemon: PokemonName[]): Promise<void>;
@@ -72,6 +72,7 @@ interface PokemonDetails {
   evolution_chain: {
     url: string;
   };
+  varieties: Variety[];
 }
 
 interface EvolutionChain {
@@ -112,6 +113,13 @@ interface TypeDetailsProps {
   };
 }
 
+interface Variety {
+  pokemon: {
+    name: string;
+    url: string;
+  };
+}
+
 const PokemonContext = createContext<PokemonContextData>(
   {} as PokemonContextData,
 );
@@ -120,12 +128,12 @@ const PokemonProvider: React.FC = ({ children }) => {
   const [pokemonList, setPokemonList] = useState<Pokemon[]>([] as Pokemon[]);
   const { search } = useSearch();
 
-  const getPokemon = useCallback(async (id: number) => {
+  const getPokemon = useCallback(async (id: string) => {
     const { data } = await Promise.resolve(api.get(`pokemon/${id}`));
     return data;
   }, []);
 
-  const getPokemonSpecie = useCallback(async (id: number) => {
+  const getPokemonSpecie = useCallback(async (id: string) => {
     const { data } = await Promise.resolve(api.get(`pokemon-species/${id}`));
     return data;
   }, []);
@@ -145,7 +153,7 @@ const PokemonProvider: React.FC = ({ children }) => {
   const getPokemonInterval = useCallback(
     async (startId: number, endId: number) => {
       for (let index = startId; index <= endId; index++) {
-        const newPokemon = await getPokemon(index);
+        const newPokemon = await getPokemon(index.toString());
         setPokemonList(oldPokemonList => [...oldPokemonList, newPokemon]);
       }
     },

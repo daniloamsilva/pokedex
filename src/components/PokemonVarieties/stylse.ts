@@ -56,4 +56,9 @@ export const Select = styled.div`
   .select-items div:hover {
     background-color: rgba(0, 0, 0, 0.1);
   }
+
+  .variety-option a {
+    color: white;
+    text-decoration: none;
+  }
 `;
