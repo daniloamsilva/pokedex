@@ -132,7 +132,7 @@ export const Main = styled.main`
     }
 
     @media (max-width: 500px) {
-      padding: 30px 10px;
+      padding-top: 20px;
     }
   }
 `;
