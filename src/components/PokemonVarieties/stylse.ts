@@ -5,6 +5,11 @@ export const Select = styled.div`
   text-align: center;
   margin-bottom: 30px;
 
+  @media (max-width: 500px) {
+    width: 100%;
+    margin-bottom: 0px;
+  }
+
   .select-selected {
     background-color: #313131;
   }
@@ -46,6 +51,11 @@ export const Select = styled.div`
     top: 100%;
     right: 0;
     z-index: 99;
+
+    @media (max-width: 500px) {
+      width: 100%;
+      margin-top: 0px;
+    }
   }
 
   /* Hide the items when the select box is closed: */
