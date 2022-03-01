@@ -132,7 +132,13 @@ export const Main = styled.main`
     }
 
     @media (max-width: 500px) {
-      padding: 50px 10px;
+      padding: 30px 10px;
     }
   }
+`;
+
+export const VarietySection = styled.section`
+  display: flex;
+  justify-content: flex-end;
+  position: relative;
 `;

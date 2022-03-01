@@ -5,12 +5,21 @@ import { FaArrowLeft, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import { usePokemon } from '../../hooks/usePokemon';
 import { capitalizeHelper } from '../../helpers/capitalize';
 
-import { Container, Nav, Header, Title, PokemonImage, Main } from './styles';
+import {
+  Container,
+  Nav,
+  Header,
+  Title,
+  PokemonImage,
+  Main,
+  VarietySection,
+} from './styles';
 
 import { PokemonAbout } from '../../components/PokemonAbout';
 import { PokemonEvoluationChain } from '../../components/PokemonEvolutionChain';
 import { PokemonStats } from '../../components/PokemonStats';
 import { PokemonType } from '../../components/PokemonType';
+import { PokemonVarieties } from '../../components/PokemonVarieties';
 
 interface PokemonDetailsParams {
   id: string;
@@ -59,6 +68,7 @@ interface PokemonSpecie {
   evolution_chain: {
     url: string;
   };
+  varieties: Variety[];
 }
 
 interface EvolutionChain {
@@ -80,34 +90,44 @@ interface FlavorTextEntrie {
   };
 }
 
+interface Variety {
+  pokemon: {
+    name: string;
+    url: string;
+  };
+}
+
 export function PokemonDetails() {
   const { params } = useRouteMatch<PokemonDetailsParams>();
   const {
     getPokemon,
-    getPokemonSpecie,
     getWeaknessesAndResistances,
     getEvolutionChain,
+    getIdVariantDefault,
   } = usePokemon();
 
   const [pokemon, setPokemon] = useState<Pokemon | null>();
   const [pokemonSpecie, setPokemonSpecie] = useState<PokemonSpecie | null>();
+  const [pokemonVarieties, setPokemonVarieties] = useState<Variety[]>([]);
   const [pokemonWeaknesses, setPokemonWeaknesses] = useState<Array<string>>();
   const [pokemonResistances, setPokemonResistances] = useState<Array<string>>();
+  const [idVariantyDefault, setIdVariantyDefault] = useState<number>();
   const [pokemonEvolutionChain, setPokemonEvolutionChain] =
     useState<EvolutionChain | null>();
 
   const capitalize = useCallback(capitalizeHelper, []);
 
   const handleGetPokemon = useCallback(async () => {
-    const pokemonTarget = await getPokemon(parseInt(params.id));
+    const { pokemonTarget, pokemonSpecies } = await getPokemon(params.id);
+
     setPokemon(pokemonTarget);
+    setPokemonSpecie(pokemonSpecies);
+    setPokemonVarieties(pokemonSpecies.varieties);
+    setIdVariantyDefault(getIdVariantDefault(pokemonSpecies));
 
-    const targetDetails = await getPokemonSpecie(parseInt(params.id));
-    setPokemonSpecie(targetDetails);
-
-    const evolutionChain = await getEvolutionChain(targetDetails);
+    const evolutionChain = await getEvolutionChain(pokemonSpecies);
     setPokemonEvolutionChain(evolutionChain);
-  }, [params, getPokemon, getPokemonSpecie, getEvolutionChain]);
+  }, [params, getEvolutionChain, getPokemon, getIdVariantDefault]);
 
   const handleGetPokemonWeaknessesAndResistances = useCallback(async () => {
     if (pokemon) {
@@ -142,8 +162,11 @@ export function PokemonDetails() {
               </Link>
             </Nav>
             <Header className="width_limit">
-              {pokemon.id > 1 ? (
-                <Link className="icon_button" to={`/details/${pokemon.id - 1}`}>
+              {idVariantyDefault && idVariantyDefault > 1 ? (
+                <Link
+                  className="icon_button"
+                  to={`/details/${idVariantyDefault - 1}`}
+                >
                   <FaChevronLeft id="chevron_left_icon" />
                 </Link>
               ) : (
@@ -161,10 +184,10 @@ export function PokemonDetails() {
                 </ul>
               </div>
               <PokemonImage>
-                {pokemon.id > 1 ? (
+                {idVariantyDefault && idVariantyDefault > 1 ? (
                   <Link
                     className="icon_button"
-                    to={`/details/${pokemon.id - 1}`}
+                    to={`/details/${idVariantyDefault - 1}`}
                   >
                     <FaChevronLeft id="chevron_left_icon" />
                   </Link>
@@ -175,10 +198,10 @@ export function PokemonDetails() {
                   src={pokemon.sprites.other['official-artwork'].front_default}
                   alt="Pokemon art"
                 />
-                {pokemon.id < 898 ? (
+                {idVariantyDefault && idVariantyDefault < 898 ? (
                   <Link
                     className="icon_button"
-                    to={`/details/${pokemon.id + 1}`}
+                    to={`/details/${idVariantyDefault + 1}`}
                   >
                     <FaChevronRight id="chevron_left_icon" />
                   </Link>
@@ -186,8 +209,11 @@ export function PokemonDetails() {
                   <div />
                 )}
               </PokemonImage>
-              {pokemon.id < 898 ? (
-                <Link className="icon_button" to={`/details/${pokemon.id + 1}`}>
+              {idVariantyDefault && idVariantyDefault < 898 ? (
+                <Link
+                  className="icon_button"
+                  to={`/details/${idVariantyDefault + 1}`}
+                >
                   <FaChevronRight id="chevron_left_icon" />
                 </Link>
               ) : (
@@ -196,7 +222,15 @@ export function PokemonDetails() {
             </Header>
           </Container>
           <Main>
-            <div id="firstLine">
+            {pokemonVarieties.length > 1 && (
+              <VarietySection>
+                <PokemonVarieties
+                  varieties={pokemonVarieties}
+                  selected={pokemon.name}
+                />
+              </VarietySection>
+            )}
+            <section id="firstLine">
               <PokemonAbout
                 description={
                   pokemonSpecie?.flavor_text_entries.find(
@@ -213,14 +247,14 @@ export function PokemonDetails() {
                 base_stats={pokemon.stats}
                 type={pokemon.types[0].type.name}
               />
-            </div>
-            <div>
+            </section>
+            <section>
               {pokemonEvolutionChain && (
                 <PokemonEvoluationChain
                   evolutionChain={pokemonEvolutionChain}
                 />
               )}
-            </div>
+            </section>
           </Main>
         </>
       )}
