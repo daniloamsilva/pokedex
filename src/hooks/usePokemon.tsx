@@ -22,6 +22,7 @@ interface PokemonContextData {
   getContinueSearchList(): Promise<void>;
   getWeaknessesAndResistances(types: Type[]): Promise<WeaknessesAndResistances>;
   getPokemonImage(id: string): string;
+  getIdVariantDefault(species: PokemonDetails): number;
 }
 
 interface Pokemon {
@@ -116,6 +117,7 @@ interface TypeDetailsProps {
 }
 
 interface Variety {
+  is_default: boolean;
   pokemon: {
     name: string;
     url: string;
@@ -273,6 +275,21 @@ const PokemonProvider: React.FC = ({ children }) => {
     return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`;
   }, []);
 
+  const getIdVariantDefault = useCallback((species: PokemonDetails) => {
+    const variantDefault = species.varieties.find(
+      variety => variety.is_default,
+    );
+
+    return variantDefault
+      ? parseInt(
+          variantDefault?.pokemon.url.substring(
+            34,
+            variantDefault?.pokemon.url.length - 1,
+          ),
+        )
+      : 0;
+  }, []);
+
   useEffect(() => {
     getInitialPokemonList();
   }, [getInitialPokemonList]);
@@ -289,6 +306,7 @@ const PokemonProvider: React.FC = ({ children }) => {
         getContinueSearchList,
         getWeaknessesAndResistances,
         getPokemonImage,
+        getIdVariantDefault,
       }}
     >
       {children}

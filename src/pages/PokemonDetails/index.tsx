@@ -99,14 +99,19 @@ interface Variety {
 
 export function PokemonDetails() {
   const { params } = useRouteMatch<PokemonDetailsParams>();
-  const { getPokemon, getWeaknessesAndResistances, getEvolutionChain } =
-    usePokemon();
+  const {
+    getPokemon,
+    getWeaknessesAndResistances,
+    getEvolutionChain,
+    getIdVariantDefault,
+  } = usePokemon();
 
   const [pokemon, setPokemon] = useState<Pokemon | null>();
   const [pokemonSpecie, setPokemonSpecie] = useState<PokemonSpecie | null>();
   const [pokemonVarieties, setPokemonVarieties] = useState<Variety[]>([]);
   const [pokemonWeaknesses, setPokemonWeaknesses] = useState<Array<string>>();
   const [pokemonResistances, setPokemonResistances] = useState<Array<string>>();
+  const [idVariantyDefault, setIdVariantyDefault] = useState<number>();
   const [pokemonEvolutionChain, setPokemonEvolutionChain] =
     useState<EvolutionChain | null>();
 
@@ -118,10 +123,11 @@ export function PokemonDetails() {
     setPokemon(pokemonTarget);
     setPokemonSpecie(pokemonSpecies);
     setPokemonVarieties(pokemonSpecies.varieties);
+    setIdVariantyDefault(getIdVariantDefault(pokemonSpecies));
 
     const evolutionChain = await getEvolutionChain(pokemonSpecies);
     setPokemonEvolutionChain(evolutionChain);
-  }, [params, getEvolutionChain, getPokemon]);
+  }, [params, getEvolutionChain, getPokemon, getIdVariantDefault]);
 
   const handleGetPokemonWeaknessesAndResistances = useCallback(async () => {
     if (pokemon) {
@@ -156,8 +162,11 @@ export function PokemonDetails() {
               </Link>
             </Nav>
             <Header className="width_limit">
-              {pokemon.id > 1 ? (
-                <Link className="icon_button" to={`/details/${pokemon.id - 1}`}>
+              {idVariantyDefault && idVariantyDefault > 1 ? (
+                <Link
+                  className="icon_button"
+                  to={`/details/${idVariantyDefault - 1}`}
+                >
                   <FaChevronLeft id="chevron_left_icon" />
                 </Link>
               ) : (
@@ -175,10 +184,10 @@ export function PokemonDetails() {
                 </ul>
               </div>
               <PokemonImage>
-                {pokemon.id > 1 ? (
+                {idVariantyDefault && idVariantyDefault > 1 ? (
                   <Link
                     className="icon_button"
-                    to={`/details/${pokemon.id - 1}`}
+                    to={`/details/${idVariantyDefault - 1}`}
                   >
                     <FaChevronLeft id="chevron_left_icon" />
                   </Link>
@@ -189,10 +198,10 @@ export function PokemonDetails() {
                   src={pokemon.sprites.other['official-artwork'].front_default}
                   alt="Pokemon art"
                 />
-                {pokemon.id < 898 ? (
+                {idVariantyDefault && idVariantyDefault < 898 ? (
                   <Link
                     className="icon_button"
-                    to={`/details/${pokemon.id + 1}`}
+                    to={`/details/${idVariantyDefault + 1}`}
                   >
                     <FaChevronRight id="chevron_left_icon" />
                   </Link>
@@ -200,8 +209,11 @@ export function PokemonDetails() {
                   <div />
                 )}
               </PokemonImage>
-              {pokemon.id < 898 ? (
-                <Link className="icon_button" to={`/details/${pokemon.id + 1}`}>
+              {idVariantyDefault && idVariantyDefault < 898 ? (
+                <Link
+                  className="icon_button"
+                  to={`/details/${idVariantyDefault + 1}`}
+                >
                   <FaChevronRight id="chevron_left_icon" />
                 </Link>
               ) : (
