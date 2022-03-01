@@ -43,11 +43,12 @@ export function PokemonVarieties({
       </div>
       <div className="select-items select-hide" ref={selectItemsRef}>
         {varieties.map(variety => (
-          <div key={variety.pokemon.name} className="variety-option">
-            <Link to={`/details/${variety.pokemon.name}`}>
-              {capitalizeHelper(variety.pokemon.name)}
-            </Link>
-          </div>
+          <Link
+            to={`/details/${variety.pokemon.name}`}
+            key={variety.pokemon.name}
+          >
+            <div>{capitalizeHelper(variety.pokemon.name)}</div>
+          </Link>
         ))}
       </div>
     </Select>
