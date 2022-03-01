@@ -15,8 +15,7 @@ import { removeDuplicates } from '../helpers/removeDuplicates';
 interface PokemonContextData {
   pokemonList: Pokemon[];
   setPokemonList: Dispatch<SetStateAction<Pokemon[]>>;
-  getPokemon(id: string): Promise<Pokemon>;
-  getPokemonSpecie(id: string): Promise<PokemonDetails>;
+  getPokemon(id: string): Promise<GetPokemonReturn>;
   getEvolutionChain(pokemonDetails: PokemonDetails): Promise<EvolutionChain>;
   getPokemonInterval(startId: number, endId: number): Promise<void>;
   getPokemonSearch(matchSearchPokemon: PokemonName[]): Promise<void>;
@@ -28,6 +27,9 @@ interface PokemonContextData {
 interface Pokemon {
   id: number;
   name: string;
+  species: {
+    url: string;
+  };
   sprites: {
     other: {
       'official-artwork': {
@@ -120,6 +122,11 @@ interface Variety {
   };
 }
 
+interface GetPokemonReturn {
+  pokemonTarget: Pokemon;
+  pokemonSpecies: PokemonDetails;
+}
+
 const PokemonContext = createContext<PokemonContextData>(
   {} as PokemonContextData,
 );
@@ -129,13 +136,15 @@ const PokemonProvider: React.FC = ({ children }) => {
   const { search } = useSearch();
 
   const getPokemon = useCallback(async (id: string) => {
-    const { data } = await Promise.resolve(api.get(`pokemon/${id}`));
-    return data;
-  }, []);
+    const { data: pokemonData } = await Promise.resolve(
+      api.get(`pokemon/${id}`),
+    );
 
-  const getPokemonSpecie = useCallback(async (id: string) => {
-    const { data } = await Promise.resolve(api.get(`pokemon-species/${id}`));
-    return data;
+    const { data: speciesData } = await Promise.resolve(
+      api.get(pokemonData.species.url.substring(26)),
+    );
+
+    return { pokemonTarget: pokemonData, pokemonSpecies: speciesData };
   }, []);
 
   const getEvolutionChain = useCallback(
@@ -154,7 +163,10 @@ const PokemonProvider: React.FC = ({ children }) => {
     async (startId: number, endId: number) => {
       for (let index = startId; index <= endId; index++) {
         const newPokemon = await getPokemon(index.toString());
-        setPokemonList(oldPokemonList => [...oldPokemonList, newPokemon]);
+        setPokemonList(oldPokemonList => [
+          ...oldPokemonList,
+          newPokemon.pokemonTarget,
+        ]);
       }
     },
     [getPokemon],
@@ -271,7 +283,6 @@ const PokemonProvider: React.FC = ({ children }) => {
         pokemonList,
         setPokemonList,
         getPokemon,
-        getPokemonSpecie,
         getEvolutionChain,
         getPokemonInterval,
         getPokemonSearch,

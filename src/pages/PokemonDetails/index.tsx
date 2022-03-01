@@ -99,12 +99,8 @@ interface Variety {
 
 export function PokemonDetails() {
   const { params } = useRouteMatch<PokemonDetailsParams>();
-  const {
-    getPokemon,
-    getPokemonSpecie,
-    getWeaknessesAndResistances,
-    getEvolutionChain,
-  } = usePokemon();
+  const { getPokemon, getWeaknessesAndResistances, getEvolutionChain } =
+    usePokemon();
 
   const [pokemon, setPokemon] = useState<Pokemon | null>();
   const [pokemonSpecie, setPokemonSpecie] = useState<PokemonSpecie | null>();
@@ -117,16 +113,15 @@ export function PokemonDetails() {
   const capitalize = useCallback(capitalizeHelper, []);
 
   const handleGetPokemon = useCallback(async () => {
-    const pokemonTarget = await getPokemon(params.id);
+    const { pokemonTarget, pokemonSpecies } = await getPokemon(params.id);
+
     setPokemon(pokemonTarget);
+    setPokemonSpecie(pokemonSpecies);
+    setPokemonVarieties(pokemonSpecies.varieties);
 
-    const targetDetails = await getPokemonSpecie(params.id.toString());
-    setPokemonSpecie(targetDetails);
-    setPokemonVarieties(targetDetails.varieties);
-
-    const evolutionChain = await getEvolutionChain(targetDetails);
+    const evolutionChain = await getEvolutionChain(pokemonSpecies);
     setPokemonEvolutionChain(evolutionChain);
-  }, [params, getPokemon, getPokemonSpecie, getEvolutionChain]);
+  }, [params, getEvolutionChain, getPokemon]);
 
   const handleGetPokemonWeaknessesAndResistances = useCallback(async () => {
     if (pokemon) {
