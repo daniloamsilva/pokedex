@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { shade } from 'polished';
 
-import pokeball from '../../assets/pokeball.png';
+import pokeball from '../../assets/pokeball.svg';
 
 export const Container = styled.div`
   max-width: 1200px;

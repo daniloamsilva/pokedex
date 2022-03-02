@@ -1,6 +1,6 @@
 import styled, { css } from 'styled-components';
 
-import imgPokeball from '../../assets/pokeball_bg_card.svg';
+import imgPokeball from '../../assets/pokeball.svg';
 
 interface ContainerProps {
   type: string;
@@ -27,6 +27,7 @@ export const Container = styled.li<ContainerProps>`
   background-position: bottom right;
   transition: 0.5s;
   background-color: ${props => `var(--color-${props.type}-type-dark)`};
+  background-blend-mode: soft-light;
 
   &:hover {
     transform: translate(0, -10px);
