@@ -21,6 +21,8 @@ import { PokemonStats } from '../../components/PokemonStats';
 import { PokemonType } from '../../components/PokemonType';
 import { PokemonVarieties } from '../../components/PokemonVarieties';
 
+import imgPokeball from '../../assets/pokeball.svg';
+
 interface PokemonDetailsParams {
   id: string;
 }
@@ -194,10 +196,16 @@ export function PokemonDetails() {
                 ) : (
                   <div />
                 )}
-                <img
-                  src={pokemon.sprites.other['official-artwork'].front_default}
-                  alt="Pokemon art"
-                />
+                <div id="image-wrap">
+                  <img
+                    id="image-pokemon"
+                    src={
+                      pokemon.sprites.other['official-artwork'].front_default
+                    }
+                    alt="Pokemon art"
+                  />
+                  <img id="image-pokeball" src={imgPokeball} alt="pokeball" />
+                </div>
                 {idVariantyDefault && idVariantyDefault < 898 ? (
                   <Link
                     className="icon_button"

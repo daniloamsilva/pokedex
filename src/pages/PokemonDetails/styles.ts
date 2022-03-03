@@ -48,7 +48,7 @@ export const Header = styled.header`
   font-weight: bolder;
   font-size: 23px;
 
-  @media (max-width: 500px) {
+  @media (max-width: 650px) {
     display: block;
     justify-content: center;
     padding: 20px 20px 0 20px;
@@ -62,7 +62,7 @@ export const Header = styled.header`
     }
   }
 
-  @media (max-width: 500px) {
+  @media (max-width: 650px) {
     #infos {
       transform: translateY(15px);
     }
@@ -85,7 +85,7 @@ export const Title = styled.div`
     font-size: 20px;
   }
 
-  @media (max-width: 500px) {
+  @media (max-width: 650px) {
     justify-content: space-between;
 
     h1 {
@@ -99,15 +99,42 @@ export const PokemonImage = styled.div`
   justify-content: space-around;
   align-items: center;
 
-  img {
-    width: 55%;
+  div#image-wrap {
+    position: relative;
+    /* width: 55%; */
+    width: 220px;
+    height: 220px;
+  }
+
+  img#image-pokemon {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+  }
+
+  img#image-pokeball {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    opacity: 0.4;
+    transform: translate(60px, 0);
+
+    @media (max-width: 650px) {
+      transform: translate(60px, -60px);
+    }
   }
 
   .icon_button {
     display: none;
   }
 
-  @media (max-width: 500px) {
+  @media (max-width: 650px) {
     transform: translateY(35px);
 
     .icon_button {
@@ -131,7 +158,7 @@ export const Main = styled.main`
       grid-template-columns: repeat(1, 1fr);
     }
 
-    @media (max-width: 500px) {
+    @media (max-width: 650px) {
       padding-top: 20px;
     }
   }
