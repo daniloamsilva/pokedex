@@ -1,6 +1,8 @@
 import styled from 'styled-components';
 import { shade } from 'polished';
 
+import pokeball from '../../assets/pokeball.svg';
+
 interface ContainerProps {
   type: string;
 }
@@ -168,4 +170,32 @@ export const VarietySection = styled.section`
   display: flex;
   justify-content: flex-end;
   position: relative;
+`;
+
+export const LoadingContainer = styled.div`
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+export const Loader = styled.div`
+  margin: 30px auto;
+  background: url(${pokeball}) no-repeat;
+  background-size: contain;
+  background-position: center;
+  width: 100px;
+  height: 100px;
+  -webkit-animation: spin 2s linear infinite;
+  animation: spin 1s linear infinite;
+
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
 `;

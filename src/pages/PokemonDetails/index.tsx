@@ -13,6 +13,8 @@ import {
   PokemonImage,
   Main,
   VarietySection,
+  LoadingContainer,
+  Loader,
 } from './styles';
 
 import { PokemonAbout } from '../../components/PokemonAbout';
@@ -143,6 +145,7 @@ export function PokemonDetails() {
   }, [pokemon, getWeaknessesAndResistances]);
 
   useEffect(() => {
+    setPokemon(null);
     window.scrollTo(0, 0);
     handleGetPokemon();
   }, [handleGetPokemon]);
@@ -153,7 +156,11 @@ export function PokemonDetails() {
 
   return (
     <>
-      {!pokemon && <h1>Carregando...</h1>}
+      {!pokemon && (
+        <LoadingContainer>
+          <Loader />
+        </LoadingContainer>
+      )}
 
       {pokemon && (
         <>
