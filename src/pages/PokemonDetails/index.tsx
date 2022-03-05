@@ -145,6 +145,7 @@ export function PokemonDetails() {
   }, [pokemon, getWeaknessesAndResistances]);
 
   useEffect(() => {
+    setPokemon(null);
     window.scrollTo(0, 0);
     handleGetPokemon();
   }, [handleGetPokemon]);
