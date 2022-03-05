@@ -5,8 +5,9 @@ export const Select = styled.div`
   text-align: center;
   margin-bottom: 30px;
 
-  @media (max-width: 500px) {
+  @media (max-width: 650px) {
     width: 100%;
+    margin-top: 30px;
     margin-bottom: 0px;
   }
 
@@ -52,7 +53,7 @@ export const Select = styled.div`
     right: 0;
     z-index: 99;
 
-    @media (max-width: 500px) {
+    @media (max-width: 650px) {
       width: 100%;
       margin-top: 0px;
     }

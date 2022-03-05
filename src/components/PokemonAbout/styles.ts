@@ -5,6 +5,10 @@ export const Container = styled.section`
   padding: 30px;
   box-shadow: 0px 0px 15px -5px #595959;
 
+  @media (max-width: 500px) {
+    padding: 20px;
+  }
+
   table {
     width: 100%;
     table-layout: auto;

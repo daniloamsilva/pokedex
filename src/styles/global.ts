@@ -71,12 +71,13 @@ export default createGlobalStyle`
   }
 
   body {
-    background-color: #FFFFFF;
     background-image: url(${imgPokeball});
+    background-color: rgba(255,255,255,0.8);
+    background-blend-mode: lighten;
     background-repeat: no-repeat;
     background-size: 70vw;
     background-position-x: 60vw;
-    background-position-y: -30vw;
+    background-position-y: -31vw;
     background-attachment: fixed;
     -webkit-font-smoothing: antialiased;
   }

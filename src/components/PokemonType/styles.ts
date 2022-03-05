@@ -16,4 +16,9 @@ export const Type = styled.li<PokemonType>`
   margin-bottom: 10px;
   transform: translateY(10px);
   background-color: ${props => `var(--color-${props.type}-type-light)`};
+
+  @media (max-width: 500px) {
+    padding: 3px 15px;
+    font-size: 12px;
+  }
 `;
