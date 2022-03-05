@@ -6,6 +6,8 @@
   <img src="https://img.shields.io/badge/typescript-4.1.2-blue" alt="typescript">
 </p>
 
+![readme_pokedex_image](https://user-images.githubusercontent.com/34426848/156903544-b59d62a7-c585-4a08-b19e-2853d04814e6.png)
+
 ## 💻 Projeto
 
 No manga, anime e jogos de Pokémon, a Pokédex é uma enciclopédia eletrônica, que fornece ao treinador informações sobre um pokémon que é desconhecido.
