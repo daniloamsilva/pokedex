@@ -13,6 +13,8 @@ import {
   PokemonImage,
   Main,
   VarietySection,
+  LoadingContainer,
+  Loader,
 } from './styles';
 
 import { PokemonAbout } from '../../components/PokemonAbout';
@@ -153,7 +155,11 @@ export function PokemonDetails() {
 
   return (
     <>
-      {!pokemon && <h1>Carregando...</h1>}
+      {!pokemon && (
+        <LoadingContainer>
+          <Loader />
+        </LoadingContainer>
+      )}
 
       {pokemon && (
         <>
