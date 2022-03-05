@@ -11,7 +11,7 @@
 ## 💻 Projeto
 
 No manga, anime e jogos de Pokémon, a Pokédex é uma enciclopédia eletrônica, que fornece ao treinador informações sobre um pokémon que é desconhecido.
-Desenvolvi esse projeto para colocar em prática meus conhecimentos e aprender muito mais sobre React com Typescript e consumo de APIs. Clique [aqui](pokedex-two-smoky.vercel.app) para testar seu funcionamento.
+Desenvolvi esse projeto para colocar em prática meus conhecimentos e aprender muito mais sobre React com Typescript e consumo de APIs. Clique [aqui](https://pokedex-two-smoky.vercel.app/) para testar seu funcionamento.
 
 ## 🚀 Tecnologias
 
