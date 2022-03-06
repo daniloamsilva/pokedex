@@ -218,7 +218,7 @@ export function PokemonDetails() {
                     className="icon_button"
                     to={`/details/${idVariantyDefault + 1}`}
                   >
-                    <FaChevronRight id="chevron_left_icon" />
+                    <FaChevronRight id="chevron_right_icon" />
                   </Link>
                 ) : (
                   <div />
@@ -229,7 +229,7 @@ export function PokemonDetails() {
                   className="icon_button"
                   to={`/details/${idVariantyDefault + 1}`}
                 >
-                  <FaChevronRight id="chevron_left_icon" />
+                  <FaChevronRight id="chevron_right_icon" />
                 </Link>
               ) : (
                 <div />

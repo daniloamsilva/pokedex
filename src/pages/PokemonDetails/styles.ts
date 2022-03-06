@@ -18,6 +18,7 @@ export const Container = styled.div<ContainerProps>`
   .icon_button {
     color: white;
     transition: color 0.2s;
+    z-index: 1;
 
     &:hover {
       color: ${shade(0.2, 'white')};
